@@ -1,5 +1,7 @@
 # bibliotech
+Aplicativo de gerenciamento de emprestimo de livros de usuarios da mesma cidade
 
-# rodar npm install
-# cd bibliotech
-# npx expo
+# Instalação
+rodar npm install
+- cd bibliotech
+- npx expo
