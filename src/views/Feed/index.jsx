@@ -11,7 +11,8 @@ import MyInput from '../../components/MyInput';
 const Feed = ({navigation}) => {
     const [search, setSearch] = useState('');
   return (
-    <View style={globalStyle.container}>
+    <View style={globalStyle.body}>
+        <View style={globalStyle.container}>
         <View style={globalStyle.fixedTop}>
             <MyInput
                 style={styles.input}
@@ -23,7 +24,9 @@ const Feed = ({navigation}) => {
                 />
         </View>
         <Post></Post>
-        <NavBar navigation={navigation} />
+        
+    </View>
+    <NavBar navigation={navigation} />
     </View>
   );
 };

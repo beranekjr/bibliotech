@@ -17,7 +17,8 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyle.container}>
+    <View style={globalStyle.body}>
+      <View style={globalStyle.container}>
       <Image
         source={require('../../assets/logo.png')}
       />
@@ -47,6 +48,7 @@ const Login = ({ navigation }) => {
             />
           </View>
         </View>
+    </View>
     </View>
   );
 };

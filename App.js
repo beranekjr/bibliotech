@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import NavBar from './src/components/NavBar';
 import Login from './src/views/Login';
 import Feed from './src/views/Feed';
 import Profile from './src/views/Profile';
