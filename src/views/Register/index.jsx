@@ -1,50 +1,45 @@
 import React, {useState} from 'react'
-import { Image, Text, View, StyleSheet } from 'react-native'
-import globalStyle from '../styles/global.style';
+import { Image, Text, View, StyleSheet,TouchableOpacity } from 'react-native'
+import globalStyle from '../../styles/global.style';
 
-import MyInput from '../components/MyInput';
-import MyButton from '../components/MyButton';
+import MyInput from '../../components/MyInput';
+import MyButton from '../../components/MyButton';
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const loginUser = () => {
+  const createAcount = () => {
     navigation.navigate('Feed');
-  }
-  const toGoRegister = () => {
-    navigation.navigate('Register');
   }
 
   return (
     <View style={globalStyle.container}>
       <Image
-        source={require('../../assets/logo.png')}
+        source={require('../../../assets/logo.png')}
       />
       <View>
-        <Text style={globalStyle.title}>Login</Text>
+        <Text style={globalStyle.title}>Crie sua conta</Text>
         <MyInput
-          placeholder="e-mail"
+          placeholder="Digite seu e-mail"
           type={'email-address'}
           value={email}
           onChangeText={setEmail}
         />
         <MyInput
-          placeholder="senha"
+          placeholder="crie sua senha"
           value={password}
           type={'default'}
           onChangeText={setPassword}
         />
           <View style={{marginTop: 30}}>
             <MyButton
-              label='entrar'
-              onPress={loginUser}
+              label='Criar'
+              onPress={createAcount}
             />
-            <Text style={globalStyle.text}>ou</Text>
-            <MyButton
-              label='register'
-              onPress={toGoRegister}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={globalStyle.text}>Já tem uma conta? Faça o login</Text>
+            </TouchableOpacity>
           </View>
         </View>
     </View>
@@ -62,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register;
