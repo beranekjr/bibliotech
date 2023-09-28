@@ -23,7 +23,7 @@ const Feed = ({navigation}) => {
                 customStyle={customStyles.input}
                 />
         </View>
-        <Post></Post>
+        <Post navigation={navigation} ></Post>
         
     </View>
     <NavBar navigation={navigation} />

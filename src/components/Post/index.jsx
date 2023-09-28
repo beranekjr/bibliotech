@@ -2,9 +2,12 @@ import React from 'react';
 import { TouchableOpacity, Text, Image, View } from 'react-native';
 import styles from './styles'
 
-const Post = ({ items }) => {
+const Post = ({ items, navigation }) => {
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Details')} 
+      style={styles.card}
+    >
       <Image
         source={require('../../../assets/placeholder.png')}
       />

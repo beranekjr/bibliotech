@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { Text, View } from 'react-native'
-import globalStyle from '../styles/global.style';
+import globalStyle from '../../styles/global.style';
+import styles from './styles'
 
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 
 const Profile = ({navigation}) => {
   return (

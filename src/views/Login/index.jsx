@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import { Image, Text, View, StyleSheet } from 'react-native'
-import globalStyle from '../styles/global.style';
-
-import MyInput from '../components/MyInput';
-import MyButton from '../components/MyButton';
+import globalStyle from '../../styles/global.style';
+import styles from './styles'
+import MyInput from '../../components/MyInput';
+import MyButton from '../../components/MyButton';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ const Login = ({ navigation }) => {
     <View style={globalStyle.body}>
       <View style={globalStyle.container}>
       <Image
-        source={require('../../assets/logo.png')}
+        source={require('../../../assets/logo.png')}
       />
       <View>
         <Text style={globalStyle.title}>Login</Text>
@@ -52,16 +52,5 @@ const Login = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#70A0AF',
-    justifyContent: 'center',
-    margin: '0 auto',
-    padding: 20,
-    gap: 93,
-  },
-});
 
 export default Login;

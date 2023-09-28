@@ -6,6 +6,7 @@ import Login from './src/views/Login';
 import Feed from './src/views/Feed';
 import Profile from './src/views/Profile';
 import Register from './src/views/Register';
+import Details from './src/views/Details';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Feed" component={Feed} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
     </NavigationContainer>
   );
