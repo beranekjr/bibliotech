@@ -1,52 +1,36 @@
 import React, {useState} from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, } from 'react-native'
 import styles from './styles'
-import {body, container} from '../../styles/global.style';
-import Carousel from 'react-native-reanimated-carousel';
+import globalStyle from '../../styles/global.style';
 
 import NavBar from '../../components/NavBar';
-import Post from '../../components/Post';
-import MyInput from '../../components/MyInput';
+import Slide from '../../components/Slide';
 
 
-const Feed = ({navigation}) => {
-    const [search, setSearch] = useState('');
-    const width = Dimensions.get('window').width;
+const Details = ({navigation}) => {
+  
+const images = [
+  {
+    url: 'https://i.imgur.com/03iuB2Um.jpg'
+  },
+  {
+    url: 'https://i.imgur.com/03iuB2Um.jpg'
+  },
+  {
+    url: 'https://i.imgur.com/03iuB2Um.jpg'
+  },
+] 
+
   return (
-    <View style={body}>
-      <View style={container}>
-      <Carousel
-                loop
-                width={width}
-                height={width / 2}
-                autoPlay={true}
-                data={[...new Array(6).keys()]}
-                scrollAnimationDuration={1000}
-                onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ index }) => (
-                    <View
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                            {index}
-                        </Text>
-                    </View>
-                )}
-            />
+    <View style={globalStyle.body}>
+      <View style={globalStyle.container}>
+        <Slide items={images} />
       </View>
       <NavBar navigation={navigation} />
     </View>
   );
 };
 
-const customStyles = {
-    input: {
-        width: '100%',
-    },
-  };
+const customStyles = {};
 
-export default Feed;
+export default Details;
