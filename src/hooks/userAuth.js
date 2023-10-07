@@ -10,7 +10,6 @@ import {
     set,
     ref,
     onValue,
-    signOut
 } from 'firebase/database';
 
 /**

@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Image, Text, View, Alert } from 'react-native';
 
-import globalStyle from '../styles/global.style';
-import styles from './styles';
-import logo from '../../assets/logo.png';
+import globalStyle from '../../styles/global.style.js';
+// import styles from './styles';
+import logo from '../../../assets/logo.png';
 
-import Loader from '../components/Loader';
-import MyInput from '../components/MyInput';
-import MyButton from '../components/MyButton';
+import Loader from '../../components/Loader';
+import MyInput from '../../components/MyInput';
+import MyButton from '../../components/MyButton';
 
-import { loginUser } from '../hooks/userAuth';
+import { loginUser } from '../../hooks/userAuth';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
