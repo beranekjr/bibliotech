@@ -9,6 +9,7 @@ import Login from './src/views/Login';
 import Feed from './src/views/Feed';
 import Profile from './src/views/Profile';
 import Register from './src/views/Register';
+import Details from './src/views/Details';
 
 import { onAuthChange, logout } from './src/hooks/userAuth';
 
@@ -59,6 +60,7 @@ export default function App() {
               <Stack.Screen name="Feed">
                 {props => <Feed {...props} extraData={user} />}
               </Stack.Screen>
+              <Stack.Screen name="Details" component={Details} />
             </>
           )}
         </Stack.Navigator>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, Text, View, Alert } from 'react-native';
 
 import globalStyle from '../styles/global.style';
+import styles from './styles';
 import logo from '../../assets/logo.png';
 
 import Loader from '../components/Loader';
@@ -40,7 +41,8 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyle.container}>
+    <View style={globalStyle.body}>
+      <View style={globalStyle.container}>
       <Image
         source={logo}
       />
@@ -70,6 +72,7 @@ const Login = ({ navigation }) => {
             />
           </View>
         </View>
+    </View>
     </View>
   );
 };

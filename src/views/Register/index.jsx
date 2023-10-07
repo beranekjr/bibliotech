@@ -36,7 +36,8 @@ const Register = ({ navigation }) => {
   }
 
   return (
-    <View style={globalStyle.container}>
+    <View style={globalStyle.body}>
+<View style={globalStyle.container}>
       <Image
         source={logo}
       />
@@ -65,6 +66,8 @@ const Register = ({ navigation }) => {
           </View>
         </View>
     </View>
+    </View>
+    
   );
 };
 
