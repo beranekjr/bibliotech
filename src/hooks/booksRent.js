@@ -6,7 +6,7 @@ import {
     orderByChild,
     equalTo,
     update
-} from "firebase/database";
+} from 'firebase/database';
 import app from '../../firebase.config';
 
 export function getRentedBooksByOwner(owner, callback) {
@@ -46,7 +46,7 @@ export function getRentSolicitations(owner, callback) {
             //TODO filtrar o 'result' de acordo com a codicao acima
             callback(result);
         })
-        .catch(err => callback(err))
+        .catch(err => callback(err));
 }
 
 export function acceptSolicitation(bookId, callback) {

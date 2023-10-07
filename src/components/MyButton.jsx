@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 
 const MyButton = ({ label, onPress  }) => {
@@ -7,6 +8,11 @@ const MyButton = ({ label, onPress  }) => {
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
   );
+};
+
+MyButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

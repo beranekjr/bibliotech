@@ -7,11 +7,12 @@ import {
     orderByChild,
     startAfter,
     limitToFirst,
-    equalTo
- } from "firebase/database";
+    equalTo,
+    getDatabase
+} from 'firebase/database';
 import app from '../../firebase.config';
 
-export function createBook(localId, name, rentTime, description) {
+export function createBook(localId, name, rentTime, description, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const newBooksRef = push(booksRef);
@@ -25,32 +26,34 @@ export function createBook(localId, name, rentTime, description) {
         pending: false,
         creationDate: new Date().toISOString(),
         images: ''
-      });
+    })
+    .then(() => callback({ success: true }))
+    .catch(err => callback(err));
 }
 
-export function listBooks(startAt) {
+export function listBooks(startAt, callback) {
     const db = getDatabase(app);
     const pageSize = 2;
     const booksRef = ref(db, 'livros_list');
 
-    let q = query(booksRef, orderByChild('creationDate'))
+    let booksQuery = query(booksRef, orderByChild('creationDate'));
 
     if (startAt) {
-        q = query(booksRef, orderByChild('creationDate'), startAfter(startAt), limitToFirst(pageSize))
+        booksQuery = query(booksRef, orderByChild('creationDate'), startAfter(startAt), limitToFirst(pageSize));
     }
 
-    get(q)
-        .then(snapshot => console.log(snapshot.val()))
-        .catch(err => console.log(err))
+    get(booksQuery)
+        .then(snapshot => callback(snapshot.val()))
+        .catch(err => callback(err));
 
 }
 
-export function getBooksByOwner(owner) {
+export function getBooksByOwner(owner, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
-    let q = query(booksRef, orderByChild('owner', equalTo(owner)))
+    let booksQuery = query(booksRef, orderByChild('owner', equalTo(owner)));
 
-    get(q)
-        .then(snapshot => console.log(snapshot.val()))
-        .catch(err => console.log(err))
+    get(booksQuery)
+        .then(snapshot => callback(snapshot.val()))
+        .catch(err => callback(err));
 }

@@ -1,22 +1,44 @@
-import React, {useState} from 'react'
-import { Image, Text, View, StyleSheet,TouchableOpacity } from 'react-native'
-import globalStyle from '../../styles/global.style';
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Image, Text, View, TouchableOpacity } from 'react-native';
 
+import globalStyle from '../../styles/global.style';
+import logo from '../../../assets/logo.png';
+
+import Loader from '../../components/Loader';
 import MyInput from '../../components/MyInput';
 import MyButton from '../../components/MyButton';
 
+import { registerUser } from '../../hooks/userAuth';
+
 const Register = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
 
   const createAcount = () => {
-    navigation.navigate('Feed');
+    setLoading(true);
+
+    registerUser(email, password, (result) => {
+      setLoading(false);
+
+      if (!result.success) {
+        Alert.alert('Algo deu errado, verifique suas informacoes e tente novamente');
+        return;
+      }
+
+      navigation.navigate('Feed');
+    });
+  };
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <View style={globalStyle.container}>
       <Image
-        source={require('../../../assets/logo.png')}
+        source={logo}
       />
       <View>
         <Text style={globalStyle.title}>Crie sua conta</Text>
@@ -46,15 +68,8 @@ const Register = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#70A0AF',
-    justifyContent: 'center',
-    margin: '0 auto',
-    padding: 20,
-    gap: 93,
-  },
-});
+Register.propTypes = {
+  navigation: PropTypes.object
+};
 
 export default Register;

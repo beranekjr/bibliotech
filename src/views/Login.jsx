@@ -1,25 +1,48 @@
-import React, {useState} from 'react'
-import { Image, Text, View, StyleSheet } from 'react-native'
-import globalStyle from '../styles/global.style';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Image, Text, View, Alert } from 'react-native';
 
+import globalStyle from '../styles/global.style';
+import logo from '../../assets/logo.png';
+
+import Loader from '../components/Loader';
 import MyInput from '../components/MyInput';
 import MyButton from '../components/MyButton';
 
+import { loginUser } from '../hooks/userAuth';
+
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
 
-  const loginUser = () => {
-    navigation.navigate('Feed');
-  }
-  const toGoRegister = () => {
+  const handleUserLogin = () => {
+    setLoading(true);
+    loginUser(email, password, (result) => {
+      setLoading(false);
+
+      const data = result.val();
+
+      if (!data) {
+        Alert.alert('Alguma coisa deu errado, tente novamente mais tarde');
+      }
+
+      navigation.navigate('Feed', { user: data });
+    });
+  };
+
+  const handleUserRegister = () => {
     navigation.navigate('Register');
+  };
+
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <View style={globalStyle.container}>
       <Image
-        source={require('../../assets/logo.png')}
+        source={logo}
       />
       <View>
         <Text style={globalStyle.title}>Login</Text>
@@ -38,12 +61,12 @@ const Login = ({ navigation }) => {
           <View style={{marginTop: 30}}>
             <MyButton
               label='entrar'
-              onPress={loginUser}
+              onPress={handleUserLogin}
             />
             <Text style={globalStyle.text}>ou</Text>
             <MyButton
               label='register'
-              onPress={toGoRegister}
+              onPress={handleUserRegister}
             />
           </View>
         </View>
@@ -51,15 +74,8 @@ const Login = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#70A0AF',
-    justifyContent: 'center',
-    margin: '0 auto',
-    padding: 20,
-    gap: 93,
-  },
-});
+Login.propTypes = {
+  navigation: PropTypes.object
+};
 
 export default Login;

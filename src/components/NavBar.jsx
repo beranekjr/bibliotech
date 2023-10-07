@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const NavBar = ({ navigation }) => {
@@ -15,6 +16,10 @@ const NavBar = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+NavBar.propTypes = {
+  navigation: PropTypes.object
 };
 
 const styles = StyleSheet.create({

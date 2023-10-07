@@ -1,15 +1,37 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+
+import Loader from './src/components/Loader';
 import NavBar from './src/components/NavBar';
 import Login from './src/views/Login';
 import Feed from './src/views/Feed';
 import Profile from './src/views/Profile';
 import Register from './src/views/Register';
 
+import { onAuthChange, logout } from './src/hooks/userAuth';
+
 export default function App() {
   const Stack = createNativeStackNavigator();
+
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  //TODO para deslogar, execute essa funcao: logout
+  logout();
+
+  useEffect(() => {
+    onAuthChange(setUser, setLoading);
+  }, []);
+
+  if (loading) {
+    return (
+      <Loader />
+    );
+  }
+
+
   return (
     <NavigationContainer>
         <Stack.Navigator
@@ -17,10 +39,28 @@ export default function App() {
             screenOptions={{
             headerShown: false
             }}>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Feed" component={Feed} />
-            <Stack.Screen name="Register" component={Register} />
+
+          { user ? (
+            <>
+              <Stack.Screen name="Feed">
+                {props => <Feed {...props} extraData={user} />}
+              </Stack.Screen>
+              <Stack.Screen name="Profile">
+                {props => <Profile {...props} extraData={user} />}
+              </Stack.Screen>
+              <Stack.Screen name="Register">
+                {props => <Profile {...props} extraData={user} />}
+              </Stack.Screen>
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Register" component={Register} />
+              <Stack.Screen name="Feed">
+                {props => <Feed {...props} extraData={user} />}
+              </Stack.Screen>
+            </>
+          )}
         </Stack.Navigator>
     </NavigationContainer>
   );

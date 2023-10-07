@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TextInput, StyleSheet, Text, View } from 'react-native';
 
 const MyInput = ({ placeholder, value, onChangeText, labelName, type, customStyle }) => {
@@ -14,6 +15,15 @@ const MyInput = ({ placeholder, value, onChangeText, labelName, type, customStyl
         />
     </View>
   );
+};
+
+MyInput.propTypes = {
+  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  labelName: PropTypes.string,
+  type: PropTypes.string.isRequired,
+  customStyle: PropTypes.object
 };
 
 const styles = StyleSheet.create({

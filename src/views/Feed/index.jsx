@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
-import { Text, View } from 'react-native'
-import styles from './styles'
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import PropTypes from 'prop-types';
+
+import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
 import NavBar from '../../components/NavBar';
@@ -8,8 +10,9 @@ import Post from '../../components/Post';
 import MyInput from '../../components/MyInput';
 
 
-const Feed = ({navigation}) => {
-    const [search, setSearch] = useState('');
+const Feed = ({navigation, extraData}) => {
+  const [search, setSearch] = useState('');
+
   return (
     <View style={globalStyle.container}>
         <View style={globalStyle.fixedTop}>
@@ -26,6 +29,11 @@ const Feed = ({navigation}) => {
         <NavBar navigation={navigation} />
     </View>
   );
+};
+
+Feed.propTypes = {
+  navigation: PropTypes.object,
+  extraData: PropTypes.object,
 };
 
 const customStyles = {
