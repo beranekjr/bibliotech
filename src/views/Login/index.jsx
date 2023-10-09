@@ -13,9 +13,9 @@ import MyButton from '../../components/MyButton';
 import { loginUser } from '../../hooks/userAuth';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('lucasdc12@gmail.com');
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('123123');
 
   const handleUserLogin = () => {
     setLoading(true);

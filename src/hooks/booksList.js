@@ -43,8 +43,15 @@ export function listBooks(startAt, callback) {
     }
 
     get(booksQuery)
-        .then(snapshot => callback(snapshot.val()))
-        .catch(err => callback(err));
+    .then(snapshot => {
+        const booksArray = [];
+        snapshot.forEach(childSnapshot => {
+            const bookData = childSnapshot.val();
+            booksArray.push(bookData);
+        });
+        callback(booksArray);
+    })
+    .catch(err => callback(err));
 
 }
 
