@@ -8,7 +8,7 @@ import NavBar from '../../components/NavBar';
 import Post from '../../components/Post';
 import MyInput from '../../components/MyInput';
 
-import axios from 'axios';
+// import axios from 'axios';
 import { listBooks } from '../../hooks/booksList';
 const Feed = ({navigation, extraData}) => {
   const [search, setSearch] = useState('');
@@ -43,7 +43,7 @@ const Feed = ({navigation, extraData}) => {
               <Post navigation={navigation} items={item}></Post>
             </View>
           ))
-        
+
         ) : (<Text>nada</Text>)}
         {/* {result.map((items, index) => (
          <Post key={index} navigation={navigation} items={items}></Post>

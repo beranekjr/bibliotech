@@ -5,6 +5,7 @@ import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import Loader from './src/components/Loader';
 import NavBar from './src/components/NavBar';
+import AddBook from './src/views/AddBook';
 import Login from './src/views/Login';
 import Feed from './src/views/Feed';
 import Profile from './src/views/Profile';
@@ -20,7 +21,7 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   //TODO para deslogar, execute essa funcao: logout
-  logout();
+  // logout();
 
   useEffect(() => {
     onAuthChange(setUser, setLoading);
@@ -46,6 +47,9 @@ export default function App() {
               <Stack.Screen name="Feed">
                 {props => <Feed {...props} extraData={user} />}
               </Stack.Screen>
+              <Stack.Screen name="AddBook">
+                {props => <AddBook {...props} extraData={user} />}
+              </Stack.Screen>
               <Stack.Screen name="Profile">
                 {props => <Profile {...props} extraData={user} />}
               </Stack.Screen>
@@ -55,6 +59,9 @@ export default function App() {
             </>
           ) : (
             <>
+              <Stack.Screen name="AddBook">
+                {props => <AddBook {...props} extraData={user} />}
+              </Stack.Screen>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Register" component={Register} />
               <Stack.Screen name="Feed">

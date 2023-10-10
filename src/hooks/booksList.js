@@ -12,7 +12,15 @@ import {
 } from 'firebase/database';
 import app from '../../firebase.config';
 
-export function createBook(localId, name, rentTime, description, callback) {
+/**
+ * @param {string} localId
+ * @param {string} name
+ * @param {string} rentTime
+ * @param {string} description
+ * @param {array} images
+ * @param {function} callback
+ */
+export function createBook(localId, name, rentTime, description, images, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const newBooksRef = push(booksRef);
@@ -25,7 +33,7 @@ export function createBook(localId, name, rentTime, description, callback) {
         user: '', //quem pegou emprestado
         pending: false,
         creationDate: new Date().toISOString(),
-        images: ''
+        images: images
     })
     .then(() => callback({ success: true }))
     .catch(err => callback(err));

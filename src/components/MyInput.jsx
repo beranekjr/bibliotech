@@ -19,7 +19,7 @@ const MyInput = ({ placeholder, value, onChangeText, labelName, type, customStyl
 
 MyInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onChangeText: PropTypes.func.isRequired,
   labelName: PropTypes.string,
   type: PropTypes.string.isRequired,

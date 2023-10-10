@@ -16,7 +16,6 @@ const firebaseConfig = {
 let app = null;
 
 if (!app) {
-    console.log(process.env)
     app = initializeApp(firebaseConfig);
 }
 
