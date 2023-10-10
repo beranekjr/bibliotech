@@ -2,12 +2,13 @@ import {
    getStorage,
    ref,
    uploadBytes,
-   getDownloadURL
+   getDownloadURL,
+
 } from 'firebase/storage';
 
 import app from '../../firebase.config';
 
-export default function uploadImagesHook(images) {
+export function uploadImagesHook(images) {
     const storage = getStorage(app);
 
     return images.map(async (imageUri) => {
@@ -25,4 +26,14 @@ export default function uploadImagesHook(images) {
     });
 }
 
+export async function getImageFromUrl(url) {
+    if (!url) {
+        return;
+    }
 
+    const storage = getStorage(app);
+
+    const image = await ref(storage, url);
+    console.log(image);
+    return image;
+}

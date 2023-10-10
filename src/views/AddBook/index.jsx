@@ -8,7 +8,7 @@ import globalStyle from '../../styles/global.style';
 import MyInput from '../../components/MyInput';
 import MyButton from '../../components/MyButton';
 
-import uploadImagesHook from '../../hooks/uploadImage';
+import { uploadImagesHook } from '../../hooks/images';
 import { createBook } from '../../hooks/booksList';
 
 import Slide from '../../components/Slide';

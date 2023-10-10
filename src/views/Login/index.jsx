@@ -18,9 +18,6 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('123123');
 
   const handleUserLogin = () => {
-    navigation.navigate('AddBook', {user: {teste: 'teste'}});
-
-    return;
     setLoading(true);
     loginUser(email, password, (result) => {
       setLoading(false);
