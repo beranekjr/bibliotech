@@ -1,25 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-const NavBar = ({ navigation }) => {
+import home from '../../assets/navbar/home.png';
+import profile from '../../assets/navbar/profile.png';
+import manage from '../../assets/navbar/manage.png';
+
+const NavBar = ({ navigation, extraData }) => {
   return (
     <View style={styles.navbar}>
-      <TouchableOpacity onPress={() => navigation.navigate('Feed')}>
-        <Text style={styles.navbarText}>Feed</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Manage', extraData)}>
+        <Image
+          source={manage}
+        />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        <Text style={styles.navbarText}>Perfil</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Feed', extraData)}>
+        <Image
+          source={home}
+        />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        <Text style={styles.navbarText}>Perfil</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Profile', extraData)}>
+        <Image
+          source={profile}
+        />
       </TouchableOpacity>
     </View>
   );
-};
-
-NavBar.propTypes = {
-  navigation: PropTypes.object
 };
 
 const styles = StyleSheet.create({

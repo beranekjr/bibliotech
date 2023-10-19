@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import uuid from 'react-native-uuid';
 import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 
@@ -66,50 +66,50 @@ const AddBook = ({ navigation, extraData }) => {
         });
     }
 
-    console.log('testeee', extraData)
-
-    return <View style={[globalStyle.body]}>
-        <View style={[globalStyle.container]}>
-            <Text style={[globalStyle.title]}>Anunciar</Text>
-            <View style={styles.addBookContainer}>
-                <MyInput
-                    placeholder="nome do livro"
-                    type={'default'}
-                    value={nome}
-                    onChangeText={setNome}
-                />
-                <MyInput
-                    placeholder="tempo de devolucao"
-                    type={'default'}
-                    value={rentTime}
-                    onChangeText={setRentTime}
-                />
-                <MyInput
-                    placeholder="descricao"
-                    type={'default'}
-                    value={description}
-                    onChangeText={setDescription}
-                />
-
-                <MyButton
-                    label='enviar imagens'
-                    onPress={selectImages}
-                />
-
-                {images &&
-                    <Slide
-
-                        items={images.map(img => { return { url: img } })}
+    return <ScrollView style={[globalStyle.body]}>
+            <View style={[globalStyle.container]}>
+                <Text style={[globalStyle.title]}>Anunciar</Text>
+                <View style={styles.addBookContainer}>
+                    <MyInput
+                        placeholder="nome do livro"
+                        type={'default'}
+                        value={nome}
+                        onChangeText={setNome}
                     />
-                }
+                    <MyInput
+                        placeholder="tempo de devolucao"
+                        type={'default'}
+                        value={rentTime}
+                        onChangeText={setRentTime}
+                    />
+                    <MyInput
+                        placeholder="descricao"
+                        type={'default'}
+                        value={description}
+                        onChangeText={setDescription}
+                    />
 
-                <MyButton
-                    label='enviar'
-                    onPress={uploadBook}
-                />
+                    <MyButton
+                        label='enviar imagens'
+                        onPress={selectImages}
+                    />
+
+                    <View style={styles.imagesContainer}>
+                        {images &&
+                            <Slide
+                                config={ {width: 220, heigth: 200 } }
+                                items={images.map(img => { return { url: img } })}
+                            />
+                        }
+                    </View>
+
+                    <MyButton
+                        label='enviar'
+                        onPress={uploadBook}
+                    />
+                </View>
             </View>
-        </View>
-    </View>;
+        </ScrollView>;
 }
 
 export default AddBook;

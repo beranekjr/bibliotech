@@ -8,5 +8,9 @@ export default StyleSheet.create({
     addBookContainer: {
         width: 236,
         alignSelf: 'center'
+    },
+    imagesContainer: {
+        marginTop: 16,
+        marginLeft: 8
     }
 });

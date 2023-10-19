@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import Loader from './src/components/Loader';
-import NavBar from './src/components/NavBar';
+import Manage from './src/views/Manage';
 import AddBook from './src/views/AddBook';
 import Login from './src/views/Login';
 import Feed from './src/views/Feed';
@@ -15,62 +15,67 @@ import Details from './src/views/Details';
 import { onAuthChange, logout } from './src/hooks/userAuth';
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator();
 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
 
-  //TODO para deslogar, execute essa funcao: logout
-  logout();
+    //TODO para deslogar, execute essa funcao: logout
+    // logout();
 
-  useEffect(() => {
-    onAuthChange(setUser, setLoading);
-    console.log(user)
-  }, []);
+    useEffect(() => {
+        onAuthChange(setUser, setLoading);
+    }, []);
 
-  if (loading) {
+    if (loading) {
+        return (
+            <Loader />
+        );
+    }
+
     return (
-      <Loader />
+        <NavigationContainer>
+                <Stack.Navigator
+                        initialRouteName='Login'
+                        screenOptions={{
+                        headerShown: false
+                        }}>
+
+                    { user ? (
+                        <>
+                            <Stack.Screen name="Feed">
+                                {props => <Feed {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="AddBook">
+                                {props => <AddBook {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="Manage">
+                                {props => <Manage {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="Profile">
+                                {props => <Profile {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="Register">
+                                {props => <Profile {...props} extraData={user} />}
+                            </Stack.Screen>
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen name="Feed">
+                                {props => <Feed {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="AddBook">
+                                {props => <AddBook {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="Manage">
+                                {props => <Manage {...props} extraData={user} />}
+                            </Stack.Screen>
+                            <Stack.Screen name="Login" component={Login} />
+                            <Stack.Screen name="Register" component={Register} />
+                            <Stack.Screen name="Details" component={Details} />
+                        </>
+                    )}
+                </Stack.Navigator>
+        </NavigationContainer>
     );
-  }
-
-  return (
-    <NavigationContainer>
-        <Stack.Navigator
-            initialRouteName='Login'
-            screenOptions={{
-            headerShown: false
-            }}>
-
-          { user ? (
-            <>
-              <Stack.Screen name="Feed">
-                {props => <Feed {...props} extraData={user} />}
-              </Stack.Screen>
-              <Stack.Screen name="AddBook">
-                {props => <AddBook {...props} extraData={user} />}
-              </Stack.Screen>
-              <Stack.Screen name="Profile">
-                {props => <Profile {...props} extraData={user} />}
-              </Stack.Screen>
-              <Stack.Screen name="Register">
-                {props => <Profile {...props} extraData={user} />}
-              </Stack.Screen>
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="AddBook">
-                {props => <AddBook {...props} extraData={user} />}
-              </Stack.Screen>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Register" component={Register} />
-              <Stack.Screen name="Feed">
-                {props => <Feed {...props} extraData={user} />}
-              </Stack.Screen>
-              <Stack.Screen name="Details" component={Details} />
-            </>
-          )}
-        </Stack.Navigator>
-    </NavigationContainer>
-  );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, Image, View } from 'react-native';
-import styles from './styles'
+import styles from './styles';
+import Loader from '../Loader';
 
 import { getImageFromUrl } from '../../hooks/images';
 
@@ -23,7 +24,7 @@ const Post = ({ book, navigation, userData }) => {
           style={{width: '50%', height: '100%'}}
           source={{uri: image}}
         /> :
-        <></>
+        <Loader />
       }
       <View>
         <Text style={styles.title}>{book?.name}</Text>
