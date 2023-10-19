@@ -7,23 +7,24 @@ import globalStyle from '../../styles/global.style';
 import NavBar from '../../components/NavBar';
 import Post from '../../components/Post';
 import MyInput from '../../components/MyInput';
-
-// import axios from 'axios';
 import { listBooks } from '../../hooks/booksList';
+
 const Feed = ({navigation, extraData}) => {
   const [search, setSearch] = useState('');
-  const [data, setData] = useState(null);
-  const url = process.env.EXPO_PUBLIC_FIREBASE_DB_URL
+  const [books, setBooks] = useState(null);
+
+  console.log('userdata', extraData)
+
   const getFeedItems = () => {
-    listBooks(0,(result) => {
-      setData(result);
-      console.log(result, 'result:')
-      console.log(data, 'data:')
+    listBooks(0, (result) => {
+      setBooks(result);
     });
   };
+
   useEffect(() => {
     getFeedItems();
   }, []);
+
   return (
     <View style={globalStyle.body}>
         <View style={globalStyle.container}>
@@ -37,19 +38,17 @@ const Feed = ({navigation, extraData}) => {
                 customStyle={customStyles.input}
                 />
         </View>
-        {data ? (
-          data.map((item, index) => (
-            <View key={index}>
-              <Post navigation={navigation} items={item}></Post>
+        {books ? (
+          books.map((book) => (
+            <View key={book.uid}>
+              <Post navigation={navigation} book={book} userData={extraData}></Post>
             </View>
           ))
 
-        ) : (<Text>nada</Text>)}
-        {/* {result.map((items, index) => (
-         <Post key={index} navigation={navigation} items={items}></Post>
-      ))} */}
-
-        <Post navigation={navigation} items={data}></Post>
+          ) : (
+            <Text>nada</Text>
+          )
+        }
     </View>
     <NavBar navigation={navigation} />
     </View>

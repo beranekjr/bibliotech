@@ -1,37 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, Image, View } from 'react-native';
 import styles from './styles'
 
 import { getImageFromUrl } from '../../hooks/images';
 
-const Post = ({ items, navigation }) => {
+const Post = ({ book, navigation, userData }) => {
+  const [image, setImage] = useState('');
+
+  useEffect(() => {
+    getImageFromUrl(book)
+      .then(img => setImage(img))
+      .catch(err => console.log(err));
+  }, []);
 
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Details')}
       style={styles.card}
     >
-      <Image
-        source={getImageFromUrl(items && items.images && items.images[0])}
-      />
+      {image ?
+        <Image
+          style={{width: '50%', height: '100%'}}
+          source={{uri: image}}
+        /> :
+        <></>
+      }
       <View>
-        <Text style={styles.title}>{items?.name}</Text>
-        <Text style={styles.subText}>tags, tags, tags</Text>
+        <Text style={styles.title}>{book?.name}</Text>
         <View style={styles.info}>
             <Text style={styles.text}>publicado por:</Text>
-            <Text style={styles.text}>{items?.owner}</Text>
+            <Text style={styles.text}>{book?.owner}</Text>
         </View>
         <View style={styles.info}>
             <Text style={styles.text}>Bairro:</Text>
-            <Text style={styles.text}>{items?.local}</Text>
+            <Text style={styles.text}>{book?.local}</Text>
         </View>
         <View style={styles.info}>
             <Text style={styles.text}>Tempo de devolução:</Text>
-            <Text style={styles.text}>{items?.rentTime}</Text>
+            <Text style={styles.text}>{book?.rentTime}</Text>
         </View>
         <View style={styles.desc}>
             <Text style={styles.text}>Sobre:</Text>
-            <Text style={styles.subText}>{items?.description}</Text>
+            <Text style={styles.subText}>{book?.description}</Text>
         </View>
       </View>
     </TouchableOpacity>

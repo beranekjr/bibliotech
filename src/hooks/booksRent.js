@@ -38,7 +38,7 @@ export function getRentSolicitations(owner, callback) {
     get(booksQuery)
         .then(snapshot => {
             const result = snapshot.val();
-            console.log(result);
+            // console.log(result);
             /*
                 apenas mostrar os resultados que tiverem pending == true
             */

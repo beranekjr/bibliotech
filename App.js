@@ -21,10 +21,11 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   //TODO para deslogar, execute essa funcao: logout
-  // logout();
+  logout();
 
   useEffect(() => {
     onAuthChange(setUser, setLoading);
+    console.log(user)
   }, []);
 
   if (loading) {
@@ -32,7 +33,6 @@ export default function App() {
       <Loader />
     );
   }
-
 
   return (
     <NavigationContainer>

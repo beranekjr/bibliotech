@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
+import uuid from 'react-native-uuid';
 import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 
 import styles from './styles';
@@ -13,13 +14,11 @@ import { createBook } from '../../hooks/booksList';
 
 import Slide from '../../components/Slide';
 
-const AddBook = ({ navigation }) => {
-
+const AddBook = ({ navigation, extraData }) => {
     const [nome, setNome] = useState('');
     const [rentTime, setRentTime] = useState('');
     const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
-    const [downloadUrls, setDownloadURLs] = useState([]);
     const [status, requestPermission] = useMediaLibraryPermissions();
 
     const selectImages = async () => {
@@ -40,27 +39,34 @@ const AddBook = ({ navigation }) => {
         }
     }
 
-    const uploadImages = async () => {
+    const uploadImages = async (uid) => {
         try {
-            const promises = uploadImagesHook(images)
+            const promises = uploadImagesHook(images, uid);
 
-            const downloadURLArray = await Promise.all(promises);
+            const result = await Promise.all(promises);
 
-            setDownloadURLs(downloadURLArray);
+            //TODO handle result
+            console.log(result);
         } catch (error) {
             console.error('Erro ao fazer upload das imagens: ', error);
         }
     };
 
     const uploadBook = () => {
-        uploadImages();
+        const uid = uuid.v4();
 
-        createBook('', nome, rentTime, description, images, (response) => {
+        uploadImages(uid);
+
+        createBook(uid, extraData.email, nome, rentTime, description, (response) => {
             if (response.success) {
                 navigation.navigate('Feed');
+            } else {
+                //todo remover as imagens caso de algum erro
             }
         });
     }
+
+    console.log('testeee', extraData)
 
     return <View style={[globalStyle.body]}>
         <View style={[globalStyle.container]}>

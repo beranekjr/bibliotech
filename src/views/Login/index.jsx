@@ -13,22 +13,19 @@ import MyButton from '../../components/MyButton';
 import { loginUser } from '../../hooks/userAuth';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('lucasdc12@gmail.com');
+  const [email, setEmail] = useState('florian@ahhaa.com');
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('123123');
+  const [password, setPassword] = useState('test1234');
 
   const handleUserLogin = () => {
     setLoading(true);
     loginUser(email, password, (result) => {
+
       setLoading(false);
 
-      const data = result.val();
-
-      if (!data) {
-        Alert.alert('Alguma coisa deu errado, tente novamente mais tarde');
+      if (result) {
+        navigation.navigate('Feed', { user: result.val() });
       }
-
-      navigation.navigate('Feed', { user: data });
     });
   };
 

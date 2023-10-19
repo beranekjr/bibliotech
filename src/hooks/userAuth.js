@@ -51,6 +51,7 @@ export function registerUser(email, password, callback) {
  */
 export function loginUser(email, password, callback) {
     const auth = getAuth(app);
+    console.log('teste')
 
     signInWithEmailAndPassword(auth, email, password)
         .then(response => {
@@ -82,7 +83,7 @@ export function onAuthChange(setUser, setLoading) {
         } else {
           setLoading(false);
         }
-      });
+    });
 }
 
 export function logout() {

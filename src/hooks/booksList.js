@@ -13,6 +13,7 @@ import {
 import app from '../../firebase.config';
 
 /**
+ * @param {string} uid
  * @param {string} localId
  * @param {string} name
  * @param {string} rentTime
@@ -20,22 +21,22 @@ import app from '../../firebase.config';
  * @param {array} images
  * @param {function} callback
  */
-export function createBook(localId, name, rentTime, description, images, callback) {
+export function createBook(uid, localId, name, rentTime, description, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const newBooksRef = push(booksRef);
 
     set(newBooksRef, {
+        uid: uid,
         owner: localId,
         name: name,
         rentTime: rentTime,
         description: description,
         user: '', //quem pegou emprestado
         pending: false,
-        creationDate: new Date().toISOString(),
-        images: images
+        creationDate: new Date().toISOString()
     })
-    .then(() => callback({ success: true }))
+    .then((a) => callback({ success: true }))
     .catch(err => callback(err));
 }
 
@@ -51,16 +52,15 @@ export function listBooks(startAt, callback) {
     }
 
     get(booksQuery)
-    .then(snapshot => {
-        const booksArray = [];
-        snapshot.forEach(childSnapshot => {
-            const bookData = childSnapshot.val();
-            booksArray.push(bookData);
-        });
-        callback(booksArray);
-    })
-    .catch(err => callback(err));
-
+        .then(snapshot => {
+            const booksArray = [];
+            snapshot.forEach(childSnapshot => {
+                const bookData = childSnapshot.val();
+                booksArray.push(bookData);
+            });
+            callback(booksArray);
+        })
+        .catch(err => callback(err));
 }
 
 export function getBooksByOwner(owner, callback) {
