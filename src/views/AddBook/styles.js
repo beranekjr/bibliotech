@@ -11,6 +11,7 @@ export default StyleSheet.create({
     },
     imagesContainer: {
         marginTop: 16,
+        marginBottom: 16,
         marginLeft: 8
     }
 });

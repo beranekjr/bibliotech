@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Alert } from 'react-native';
 import uuid from 'react-native-uuid';
 import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 
@@ -9,7 +9,7 @@ import globalStyle from '../../styles/global.style';
 import MyInput from '../../components/MyInput';
 import MyButton from '../../components/MyButton';
 
-import { uploadImagesHook } from '../../hooks/images';
+import { uploadImagesHook, removeImages } from '../../hooks/images';
 import { createBook } from '../../hooks/booksList';
 
 import Slide from '../../components/Slide';
@@ -43,25 +43,42 @@ const AddBook = ({ navigation, extraData }) => {
         try {
             const promises = uploadImagesHook(images, uid);
 
-            const result = await Promise.all(promises);
-
-            //TODO handle result
-            console.log(result);
+            Promise.all(promises);
         } catch (error) {
             console.error('Erro ao fazer upload das imagens: ', error);
         }
     };
 
     const uploadBook = () => {
+        if (!nome) {
+            Alert.alert('Por favor especifique o nome do livro');
+            return;
+        }
+
+        if (!rentTime) {
+            Alert.alert('Por favor determine o tempo de devolução');
+            return;
+        }
+
+        if (!description) {
+            Alert.alert('Por favor defina uma descrição para o livro');
+            return;
+        }
+
+        if (images.length === 0) {
+            Alert.alert('Ao menos uma imagem é necessaria para anunciar');
+            return;
+        }
+
         const uid = uuid.v4();
 
         uploadImages(uid);
 
         createBook(uid, extraData.email, nome, rentTime, description, (response) => {
-            if (response.success) {
-                navigation.navigate('Feed');
+            if (!response.success) {
+                navigation.navigate('Feed', extraData);
             } else {
-                //todo remover as imagens caso de algum erro
+                removeImages(uid)
             }
         });
     }
@@ -75,34 +92,35 @@ const AddBook = ({ navigation, extraData }) => {
                         type={'default'}
                         value={nome}
                         onChangeText={setNome}
+                        maxLength={30}
                     />
                     <MyInput
-                        placeholder="tempo de devolucao"
-                        type={'default'}
+                        placeholder="tempo de devolucao em dias"
+                        type={'numeric'}
                         value={rentTime}
+                        maxLength={2}
                         onChangeText={setRentTime}
                     />
                     <MyInput
                         placeholder="descricao"
                         type={'default'}
                         value={description}
+                        maxLength={150}
                         onChangeText={setDescription}
+                        customStyle={{ height: 100 }}
                     />
-
                     <MyButton
                         label='enviar imagens'
                         onPress={selectImages}
                     />
-
                     <View style={styles.imagesContainer}>
                         {images &&
                             <Slide
-                                config={ {width: 220, heigth: 200 } }
+                                config={{ width: 220, heigth: 200 }}
                                 items={images.map(img => { return { url: img } })}
                             />
                         }
                     </View>
-
                     <MyButton
                         label='enviar'
                         onPress={uploadBook}

@@ -3,13 +3,15 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     card: {
+        marginBottom: 16,
+        marginTop: 8,
         flexDirection: 'row',
         borderRadius: 20,
         backgroundColor: '#D9D9D9',
         paddingVertical: 23,
         paddingHorizontal: 17,
         alignItems: 'flex-start',
-        gap: 25
+        gap: 24
       },
       title: {
         color: '#000',

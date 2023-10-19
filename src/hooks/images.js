@@ -3,13 +3,20 @@ import {
    ref,
    uploadBytes,
    list,
-   getDownloadURL
+   getDownloadURL,
+   deleteObject,
+   listAll
 } from 'firebase/storage';
 
 import app from '../../firebase.config';
 
 let storage = null;
 
+/**
+ * @param {array} images array de imagens a serem feitas o upload
+ * @param {string} uid uid do livro
+ * @returns
+ */
 export function uploadImagesHook(images, uid) {
     const storage = getStorage(app);
 
@@ -26,6 +33,10 @@ export function uploadImagesHook(images, uid) {
     });
 }
 
+/**
+ * @param {Object} book um objeto contendo uid do livro e das imagens
+ * @returns
+ */
 export async function getImageFromUrl(book) {
     if (!book || !book.uid) {
         return '';
@@ -44,4 +55,21 @@ export async function getImageFromUrl(book) {
     }
 
     return '';
+}
+
+/**
+ * Remove todas as imagens do especificado livro
+ * @param {string} uid uid do livro contendo as imagens
+ */
+export async function removeImages(uid) {
+    console.log('aquiii')
+    const uuid = '/images/' + uid;
+    if (!storage) {
+        storage = getStorage(app);
+    }
+
+    const imagesRef = ref(storage, uuid);
+    const images = await listAll(imagesRef);
+
+    images.items.forEach(image => deleteObject(image));
 }

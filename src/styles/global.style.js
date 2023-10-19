@@ -4,6 +4,9 @@ export default styles = StyleSheet.create({
         backgroundColor: '#70A0AF',
         flex: 1,
     },
+    scrollView: {
+        marginBottom: 64
+    },
     container: {
         padding: 20,
         marginTop: 60
