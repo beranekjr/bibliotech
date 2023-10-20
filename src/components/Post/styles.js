@@ -11,28 +11,37 @@ const styles = StyleSheet.create({
         paddingVertical: 23,
         paddingHorizontal: 17,
         alignItems: 'flex-start',
-        gap: 24
-      },
-      title: {
+        overflow: 'hidden'
+    },
+    title: {
         color: '#000',
         fontWeight: 'bold',
-        fontSize: 15
-      },
-      subText: {
+        fontSize: 15,
+        marginBottom: 8
+    },
+    subText: {
         color: '#413F3F',
         fontWeight: 'bold',
         fontSize: 8,
         fontStyle: 'italic'
-      },
-      info: {
+    },
+    info: {
+        maxWidth: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-      },
-      text: {
+        overflow: 'hidden',
+    },
+    desc: {
+        maxWidth: 200,
+    },
+    text: {
         color: '#000',
         fontWeight: 'bold',
-        fontSize: 10
-      },
+        fontSize: 12
+    },
+    cardInfo: {
+        marginLeft: 12,
+    }
 });
 
 export default styles

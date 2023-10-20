@@ -6,9 +6,9 @@ import {
     query,
     orderByChild,
     startAfter,
-    limitToFirst,
     equalTo,
-    getDatabase
+    getDatabase,
+    limitToFirst
 } from 'firebase/database';
 import app from '../../firebase.config';
 
@@ -21,7 +21,7 @@ import app from '../../firebase.config';
  * @param {array} images
  * @param {function} callback
  */
-export function createBook(uid, localId, name, rentTime, description, callback) {
+export function createBook(uid, localId, name, local, rentTime, description, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const newBooksRef = push(booksRef);
@@ -30,6 +30,7 @@ export function createBook(uid, localId, name, rentTime, description, callback) 
         uid: uid,
         owner: localId,
         name: name,
+        local: local,
         rentTime: rentTime,
         description: description,
         user: '', //quem pegou emprestado
@@ -42,14 +43,10 @@ export function createBook(uid, localId, name, rentTime, description, callback) 
 
 export function listBooks(startAt, callback) {
     const db = getDatabase(app);
-    const pageSize = 2;
+    const pageSize = 6;
     const booksRef = ref(db, 'livros_list');
 
-    let booksQuery = query(booksRef, orderByChild('creationDate'));
-
-    if (startAt) {
-        booksQuery = query(booksRef, orderByChild('creationDate'), startAfter(startAt), limitToFirst(pageSize));
-    }
+    const booksQuery = query(booksRef, orderByChild('creationDate'), startAfter(startAt), limitToFirst(pageSize));
 
     get(booksQuery)
         .then(snapshot => {
@@ -58,7 +55,10 @@ export function listBooks(startAt, callback) {
                 const bookData = childSnapshot.val();
                 booksArray.push(bookData);
             });
-            callback(booksArray);
+            callback({
+                books: booksArray,
+                pageIndex: startAt + pageSize
+            });
         })
         .catch(err => callback(err));
 }

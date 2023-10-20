@@ -46,12 +46,14 @@ const Register = ({ navigation }) => {
                         placeholder="Digite seu e-mail"
                         type={'email-address'}
                         value={email}
+                        maxLength={30}
                         onChangeText={setEmail}
                     />
                     <MyInput
                         placeholder="crie sua senha"
                         value={password}
                         type={'default'}
+                        maxLength={30}
                         onChangeText={setPassword}
                     />
                         <View style={{marginTop: 30}}>

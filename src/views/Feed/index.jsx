@@ -13,17 +13,20 @@ const Feed = ({navigation, extraData}) => {
     const [search, setSearch] = useState('');
     const [books, setBooks] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
+    const [pageIndex, setPageIndex] = useState(0);
 
     const getFeedItems = () => {
-        listBooks(0, (result) => {
-            setBooks(result);
+        listBooks(pageIndex, (result) => {
+            setBooks(result.books);
+            setPageIndex(result.pageIndex);
         });
     };
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        listBooks(0, (result) => {
-            setBooks(result);
+        listBooks(pageIndex, (result) => {
+            setBooks(result.books);
+            setPageIndex(result.pageIndex);
             setRefreshing(false);
         });
     }, []);
@@ -42,13 +45,14 @@ const Feed = ({navigation, extraData}) => {
                 <View style={globalStyle.container}>
                     <View style={globalStyle.fixedTop}>
                         <MyInput
-                                style={styles.input}
-                                placeholder="Procurar"
-                                type={'default'}
-                                value={search}
-                                onChangeText={setSearch}
-                                customStyle={customStyles.input}
-                                />
+                            style={styles.input}
+                            placeholder="Procurar"
+                            type={'default'}
+                            value={search}
+                            onChangeText={setSearch}
+                            maxLength={30}
+                            customStyle={customStyles.input}
+                            />
                     </View>
                     {books ? (
                         books.map((book) => (

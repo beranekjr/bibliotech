@@ -16,6 +16,7 @@ import Slide from '../../components/Slide';
 
 const AddBook = ({ navigation, extraData }) => {
     const [nome, setNome] = useState('');
+    const [bairro, setBairro] = useState('');
     const [rentTime, setRentTime] = useState('');
     const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
@@ -74,8 +75,8 @@ const AddBook = ({ navigation, extraData }) => {
 
         uploadImages(uid);
 
-        createBook(uid, extraData.email, nome, rentTime, description, (response) => {
-            if (!response.success) {
+        createBook(uid, extraData.email, nome, bairro, rentTime, description, (response) => {
+            if (response.success) {
                 navigation.navigate('Feed', extraData);
             } else {
                 removeImages(uid)
@@ -92,6 +93,13 @@ const AddBook = ({ navigation, extraData }) => {
                         type={'default'}
                         value={nome}
                         onChangeText={setNome}
+                        maxLength={30}
+                    />
+                    <MyInput
+                        placeholder="bairro"
+                        type={'default'}
+                        value={bairro}
+                        onChangeText={setBairro}
                         maxLength={30}
                     />
                     <MyInput

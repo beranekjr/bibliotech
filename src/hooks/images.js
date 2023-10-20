@@ -62,7 +62,6 @@ export async function getImageFromUrl(book) {
  * @param {string} uid uid do livro contendo as imagens
  */
 export async function removeImages(uid) {
-    console.log('aquiii')
     const uuid = '/images/' + uid;
     if (!storage) {
         storage = getStorage(app);
