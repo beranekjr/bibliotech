@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 
-const MyButton = ({ label, onPress  }) => {
+const MyButton = ({ label, customStyle, onPress  }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, customStyle]}>{label}</Text>
     </TouchableOpacity>
   );
 };

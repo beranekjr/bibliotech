@@ -35,47 +35,47 @@ export default function App() {
 
     return (
         <NavigationContainer>
-                <Stack.Navigator
-                        initialRouteName='Login'
-                        screenOptions={{
-                        headerShown: false
-                        }}>
+            <Stack.Navigator
+                initialRouteName='Login'
+                screenOptions={{
+                headerShown: false
+                }}>
 
-                    { user ? (
-                        <>
-                            <Stack.Screen name="Feed">
-                                {props => <Feed {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="AddBook">
-                                {props => <AddBook {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="Manage">
-                                {props => <Manage {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="Profile">
-                                {props => <Profile {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="Register">
-                                {props => <Profile {...props} extraData={user} />}
-                            </Stack.Screen>
-                        </>
-                    ) : (
-                        <>
-                            <Stack.Screen name="Feed">
-                                {props => <Feed {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="AddBook">
-                                {props => <AddBook {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="Manage">
-                                {props => <Manage {...props} extraData={user} />}
-                            </Stack.Screen>
-                            <Stack.Screen name="Login" component={Login} />
-                            <Stack.Screen name="Register" component={Register} />
-                            <Stack.Screen name="Details" component={Details} />
-                        </>
-                    )}
-                </Stack.Navigator>
+            { user ? (
+                <>
+                    <Stack.Screen name="Feed">
+                        {props => <Feed {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="AddBook">
+                        {props => <AddBook {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Manage">
+                        {props => <Manage {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Profile">
+                        {props => <Profile {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Register">
+                        {props => <Profile {...props} extraData={user} />}
+                    </Stack.Screen>
+                </>
+            ) : (
+                <>
+                    <Stack.Screen name="Feed">
+                        {props => <Feed {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="AddBook">
+                        {props => <AddBook {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Manage">
+                        {props => <Manage {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Register" component={Register} />
+                    <Stack.Screen name="Details" component={Details} />
+                </>
+            )}
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }
