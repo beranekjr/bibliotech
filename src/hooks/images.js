@@ -57,6 +57,26 @@ export async function getImageFromUrl(book) {
     return '';
 }
 
+export async function getAllBookImages(book) {
+    if (!book || !book.uid) {
+        return '';
+    }
+
+    const uuid = '/images/' + book.uid;
+    if (!storage) {
+        storage = getStorage(app);
+    }
+
+    const imagesRef = ref(storage, uuid);
+    const images = await list(imagesRef);
+
+    if (images.items.length > 0) {
+        return images.items.map(img => getDownloadURL(img));
+    }
+
+    return '';
+}
+
 /**
  * Remove todas as imagens do especificado livro
  * @param {string} uid uid do livro contendo as imagens
