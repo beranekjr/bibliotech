@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, SafeAreaView, FlatList } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
 import styles from './styles';
@@ -7,24 +7,41 @@ import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
+import Loader from '../Loader';
 
 import RequestsCtas from '../RequestsCtas';
 
-const Requests = () => {
+import { getRentSolicitations } from '../../hooks/booksRent';
 
-    const book = {
-        "creationDate": "2023-10-20T01:19:04.559Z",
-        "description": "Harry potter e as relíquias da morte. Livro em bom estado e não muito desgastado ",
-        "local": "Benfica",
-        "name": "Harry Potter",
-        "owner": "florian@ahhaa.com",
-        "pending": false,
-        "rentTime": "11",
-        "uid": "32ec1007-994b-4639-b0f9-7f49a90af4d7",
-        "user": ""
+const Requests = ({ ownerEmail }) => {
+    const [books, setBooks] = useState([]);
+    const [loader, setLoader] = useState(true);
+    const [isCollapsed, setCollapsed] = useState(true);
+
+    const fetchBooks = () => {
+        getRentSolicitations(ownerEmail, (booksPending) => {
+            if (books.length === 0) {
+                setBooks(booksPending);
+            }
+            setLoader(false);
+        });
+    };
+
+    const updateBookList = (bookReferenceId) => {
+        const newBooks = books.filter(book => book.referenceId !== bookReferenceId);
+        setBooks(newBooks);
     }
 
-    const [isCollapsed, setCollapsed] = useState(false);
+    const renderItemCard = (args) => {
+        return (
+            <>
+                <Post book={args.item}></Post>
+                <RequestsCtas
+                    book={args.item}
+                    onPress={() => updateBookList(args.item.referenceId)}/>
+            </>
+        )
+    }
 
     return <View style={[globalStyle.container, styles.container]}>
         <MyButton
@@ -34,10 +51,19 @@ const Requests = () => {
         />
         <Collapsible
             style={styles.collapsedContainer}
-            collapsed={isCollapsed}>
+            collapsed={isCollapsed}
+            onAnimationEnd={fetchBooks}
+            >
             <View style={styles.collapsedContainer}>
-                <Post book={book}></Post>
-                <RequestsCtas book={book}/>
+                {
+                    books.length > 0 ?
+                        <FlatList
+                            data={books}
+                            renderItem={renderItemCard}
+                            keyExtractor={item => item.uid}
+                        />
+                    : <></>
+                }
             </View>
         </Collapsible>
     </View>

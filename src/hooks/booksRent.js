@@ -37,13 +37,14 @@ export function getRentSolicitations(owner, callback) {
 
     get(booksQuery)
         .then(snapshot => {
-            const result = snapshot.val();
-            // console.log(result);
-            /*
-                apenas mostrar os resultados que tiverem pending == true
-            */
+            const books = snapshot.val();
 
-            //TODO filtrar o 'result' de acordo com a codicao acima
+            const result = Object.keys(books).map(key => {
+                let newObj = books[key];
+                newObj.referenceId = key;
+                return newObj;
+            }).filter(book => book.pending);
+
             callback(result);
         })
         .catch(err => callback(err));
@@ -59,7 +60,6 @@ export function acceptSolicitation(bookId, callback) {
     .then(() => callback({ success: true }))
     .catch(err => callback(err));
 }
-
 
 export function rejectSolicitation(bookId, callback) {
     const db = getDatabase(app);

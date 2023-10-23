@@ -5,17 +5,16 @@ import styles from './styles';
 
 import { acceptSolicitation, rejectSolicitation } from '../../hooks/booksRent';
 
-const RequestsCtas = ({ book }) => {
-
+const RequestsCtas = ({ book, onPress }) => {
     const acceptBookSolicitation = () => {
-        acceptSolicitation(book.uid, () => {
-            console.log('aceitado com sucesso');
+        acceptSolicitation(book.referenceId, () => {
+            onPress({ success: true });
         })
     }
 
     const rejectBookSolicitation = () => {
-        rejectSolicitation(book.uid, () => {
-            console.log('rejeitado com sucesso')
+        rejectSolicitation(book.referenceId, () => {
+            onPress({ success: true });
         })
     }
 

@@ -4,9 +4,11 @@ const $black = '#331E38';
 
 export default styles = StyleSheet.create({
     container: {
+        padding: 0,
         backgroundColor: $black,
         margin: 16,
-        borderRadius: 15
+        borderRadius: 15,
+        marginBottom: 128
     },
     collapsableCta: {
         fontSize: 24,
