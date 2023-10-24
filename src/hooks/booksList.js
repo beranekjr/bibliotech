@@ -8,9 +8,11 @@ import {
     startAfter,
     equalTo,
     getDatabase,
-    limitToFirst
+    limitToFirst,
+    remove
 } from 'firebase/database';
 import app from '../../firebase.config';
+import { parseBooksList } from './helpers';
 
 /**
  * @param {string} uid
@@ -69,7 +71,10 @@ export function getBooksByOwner(owner, callback) {
     let booksQuery = query(booksRef, orderByChild('owner', equalTo(owner)));
 
     get(booksQuery)
-        .then(snapshot => callback(snapshot.val()))
+        .then(snapshot => {
+            const result = parseBooksList(snapshot.val(), null);
+            callback(result);
+        })
         .catch(err => callback(err));
 }
 
@@ -81,4 +86,13 @@ export function getBookByUid(uid, callback) {
     get(booksQuery)
         .then(snapshot => callback(snapshot.val()))
         .catch(err => callback(err));
+}
+
+export function removeBookByReferenceId(referenceId, callback) {
+    const db = getDatabase(app);
+    const booksRef = ref(db, `livros_list/${referenceId}`);
+
+    remove(booksRef)
+        .then(() => callback({ success: true }))
+        .catch(err => callback({ success: false, error: err.message }));
 }

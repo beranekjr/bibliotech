@@ -1,7 +1,10 @@
 import { StyleSheet } from "react-native";
+
+import { $light_blue, $white, $black } from './colors.style';
+
 export default styles = StyleSheet.create({
     body: {
-        backgroundColor: '#70A0AF',
+        backgroundColor: $light_blue,
         flex: 1,
     },
     scrollView: {
@@ -13,16 +16,33 @@ export default styles = StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        color: '#fff',
+        color: $white,
         fontSize: 20,
         marginBottom: 10,
         marginTop: 10,
     },
     title: {
         textAlign: 'center',
-        color: '#fff',
+        color: $white,
         fontSize: 36,
         fontWeight: 'bold',
         marginBottom: 30,
-      },
+    },
+    manageItemContainer: {
+        padding: 0,
+        backgroundColor: $black,
+        marginVertical: 16,
+        marginHorizontal: 16,
+        borderRadius: 15,
+    },
+    collapsedContainer: {
+        height: 400,
+        padding: 8,
+        paddingTop: 16,
+        paddingBottom: 16,
+        borderRadius: 10
+    },
+    collapsedContainerView: {
+        flex:1
+    }
 });

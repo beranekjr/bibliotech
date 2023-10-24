@@ -1,23 +1,33 @@
 import { StyleSheet } from 'react-native';
 
-const $black = '#331E38';
+import { $dark_white, $black } from '../../styles/colors.style';
 
 export default styles = StyleSheet.create({
-    container: {
-        padding: 0,
-        backgroundColor: $black,
-        margin: 16,
+    requestsCtaContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    requestsCtas: {
+        width: '42%',
+        height: 34,
+        margin: 8,
         borderRadius: 15,
-        marginBottom: 128
     },
-    collapsableCta: {
-        fontSize: 24,
-        fontWeight: 'bold'
+    requestsCtasText: {
+        fontSize: 16,
+        marginTop: 3,
+        fontWeight: 'bold',
+        alignSelf: 'center',
     },
-    collapsedContainer: {
-        padding: 8,
-        paddingTop: 16,
-        paddingBottom: 16,
-        borderRadius: 10
+    acceptCta: {
+        backgroundColor: $dark_white
+    },
+    rejectCta: {
+        backgroundColor: $black,
+        borderColor: $dark_white,
+        borderWidth: 2,
+    },
+    rejectCtaText: {
+        color: $dark_white
     }
 });

@@ -9,13 +9,31 @@ import {
 } from 'firebase/database';
 import app from '../../firebase.config';
 
+import { parseBooksList } from './helpers';
+
 export function getRentedBooksByOwner(owner, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const booksQuery = query(booksRef, orderByChild('user'), equalTo(owner));
 
     get(booksQuery)
-        .then(snapshot => callback(snapshot.val()))
+        .then(snapshot => {
+            callback(parseBooksList(snapshot.val(), null))
+        })
+        .catch(err => callback(err));
+}
+
+export function getBorrowedBooks(owner, callback) {
+    const db = getDatabase(app);
+    const booksRef = ref(db, 'livros_list');
+    const booksQuery = query(booksRef, orderByChild('owner'), equalTo(owner));
+
+    get(booksQuery)
+        .then(snapshot => {
+            const result = parseBooksList(snapshot.val(), book => book.user !== '' && !book.pending);
+
+            callback(result);
+        })
         .catch(err => callback(err));
 }
 
@@ -37,13 +55,7 @@ export function getRentSolicitations(owner, callback) {
 
     get(booksQuery)
         .then(snapshot => {
-            const books = snapshot.val();
-
-            const result = Object.keys(books).map(key => {
-                let newObj = books[key];
-                newObj.referenceId = key;
-                return newObj;
-            }).filter(book => book.pending);
+            const result = parseBooksList(snapshot.val(), book => book.pending);
 
             callback(result);
         })

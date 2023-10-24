@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, SafeAreaView, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, FlatList, TouchableOpacity, Text, ScrollView } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
 import styles from './styles';
@@ -7,15 +7,11 @@ import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
-import Loader from '../Loader';
 
-import RequestsCtas from '../RequestsCtas';
-
-import { getRentSolicitations } from '../../hooks/booksRent';
+import { getRentSolicitations, acceptSolicitation, rejectSolicitation} from '../../hooks/booksRent';
 
 const Requests = ({ ownerEmail }) => {
     const [books, setBooks] = useState([]);
-    const [loader, setLoader] = useState(true);
     const [isCollapsed, setCollapsed] = useState(true);
 
     const fetchBooks = () => {
@@ -23,48 +19,78 @@ const Requests = ({ ownerEmail }) => {
             if (books.length === 0) {
                 setBooks(booksPending);
             }
-            setLoader(false);
         });
     };
 
     const updateBookList = (bookReferenceId) => {
         const newBooks = books.filter(book => book.referenceId !== bookReferenceId);
         setBooks(newBooks);
+        if (newBooks) {
+            setCollapsed(true);
+        }
     }
 
-    const renderItemCard = (args) => {
-        return (
-            <>
-                <Post book={args.item}></Post>
-                <RequestsCtas
-                    book={args.item}
-                    onPress={() => updateBookList(args.item.referenceId)}/>
-            </>
-        )
+    const RequestsCtas = ({ book, onPress }) => {
+        const acceptBookSolicitation = () => {
+            acceptSolicitation(book.referenceId, () => {
+                onPress({ success: true });
+            })
+        }
+
+        const rejectBookSolicitation = () => {
+            rejectSolicitation(book.referenceId, () => {
+                onPress({ success: true });
+            })
+        }
+
+        return <View style={styles.requestsCtaContainer}>
+            <TouchableOpacity
+                style={[styles.requestsCtas, styles.acceptCta]}
+                onPress={acceptBookSolicitation}
+            >
+                <Text style={styles.requestsCtasText}>
+                    aceitar
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={[styles.requestsCtas, styles.rejectCta]}
+                onPress={rejectBookSolicitation}
+            >
+                <Text style={[styles.requestsCtasText, styles.rejectCtaText]}>
+                    rejeitar
+                </Text>
+            </TouchableOpacity>
+        </View>;
     }
 
-    return <View style={[globalStyle.container, styles.container]}>
+    const renderItemCard = (booksList) => {
+        return booksList.map(book => {
+            return (
+                <>
+                    <Post book={book}></Post>
+                    <RequestsCtas
+                        book={book}
+                        onPress={() => updateBookList(book.referenceId)}/>
+                </>
+            )
+        })
+    }
+
+    return <View style={globalStyle.manageItemContainer}>
         <MyButton
-            customStyle={styles.collapsableCta}
+            customStyle={globalStyle.collapsableCta}
             label='Solicitacoes'
             onPress={() => setCollapsed(!isCollapsed)}
         />
         <Collapsible
-            style={styles.collapsedContainer}
+            style={globalStyle.collapsedContainer}
             collapsed={isCollapsed}
             onAnimationEnd={fetchBooks}
             >
-            <View style={styles.collapsedContainer}>
-                {
-                    books.length > 0 ?
-                        <FlatList
-                            data={books}
-                            renderItem={renderItemCard}
-                            keyExtractor={item => item.uid}
-                        />
-                    : <></>
-                }
-            </View>
+            <ScrollView style={globalStyle.collapsedContainerView}>
+                {renderItemCard(books)}
+            </ScrollView>
         </Collapsible>
     </View>
 }
