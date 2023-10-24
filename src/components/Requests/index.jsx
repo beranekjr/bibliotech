@@ -30,7 +30,7 @@ const Requests = ({ ownerEmail }) => {
         }
     }
 
-    const RequestsCtas = ({ book, onPress }) => {
+    const RequestsCtas = ({ key, book, onPress }) => {
         const acceptBookSolicitation = () => {
             acceptSolicitation(book.referenceId, () => {
                 onPress({ success: true });
@@ -43,7 +43,9 @@ const Requests = ({ ownerEmail }) => {
             })
         }
 
-        return <View style={styles.requestsCtaContainer}>
+        return <View
+            key={key}
+            style={styles.requestsCtaContainer}>
             <TouchableOpacity
                 style={[styles.requestsCtas, styles.acceptCta]}
                 onPress={acceptBookSolicitation}
@@ -70,6 +72,7 @@ const Requests = ({ ownerEmail }) => {
                 <>
                     <Post book={book}></Post>
                     <RequestsCtas
+                        key={book.uid}
                         book={book}
                         onPress={() => updateBookList(book.referenceId)}/>
                 </>

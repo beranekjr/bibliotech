@@ -20,12 +20,25 @@ const Manage = ({navigation, extraData}) => {
                     onPress={() => navigation.navigate('AddBook', { user:   extraData })}
                     />
             </View>
-            <ScrollView styles={[globalStyle.scrollView, styles.accordion]}>
+            <View
+                StickyHeaderComponent={true}
+                styles={[globalStyle.scrollView, styles.accordion]}>
                 <Requests ownerEmail={extraData.email}/>
                 <Published ownerEmail={extraData.email} />
                 <Borrowed ownerEmail={extraData.email} />
                 <Renting ownerEmail={extraData.email} />
-            </ScrollView>
+            </View>
+
+            {/*
+                TODO comparar esse codigo com o acima pra checar qual melhor opcai
+            <ScrollView
+                StickyHeaderComponent={true}
+                styles={[globalStyle.scrollView, styles.accordion]}>
+                <Requests ownerEmail={extraData.email}/>
+                <Published ownerEmail={extraData.email} />
+                <Borrowed ownerEmail={extraData.email} />
+                <Renting ownerEmail={extraData.email} />
+            </ScrollView> */}
             <NavBar navigation={navigation} extraData={extraData} />
         </View>
     );

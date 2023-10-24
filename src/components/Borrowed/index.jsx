@@ -35,6 +35,7 @@ const Borrowed = ({ ownerEmail }) => {
 
         return (
             <TouchableOpacity
+                key={bookReferenceId}
                 style={styles.removeCta}
                 onPress={conclude}
             >

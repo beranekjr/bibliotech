@@ -41,6 +41,7 @@ const Published = ({ ownerEmail }) => {
 
         return (
             <TouchableOpacity
+                key={bookReferenceId}
                 style={styles.removeCta}
                 onPress={removeBook}
             >
