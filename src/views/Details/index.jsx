@@ -1,30 +1,33 @@
-import React, {useState} from 'react'
-import { Text, View, } from 'react-native'
-import styles from './styles'
+import React, { useState, useEffect } from 'react';
+import { Text, View, } from 'react-native';
+
+import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
 import NavBar from '../../components/NavBar';
 import Slide from '../../components/Slide';
 
+import { getAllBookImages } from '../../hooks/images';
 
-const Details = ({navigation}) => {
+const Details = ({ route, navigation }) => {
 
-const images = [
-    {
-        url: 'https://i.imgur.com/03iuB2Um.jpg'
-    },
-    {
-        url: 'https://i.imgur.com/03iuB2Um.jpg'
-    },
-    {
-        url: 'https://i.imgur.com/03iuB2Um.jpg'
-    },
-]
+    const [images, setImages] = useState([]);
+    const { book, extraData } = route.params;
+
+    useEffect(() => {
+        getAllBookImages(book, (imagesResponse) => {
+            setImages(imagesResponse.map(img => {
+                return {
+                    url: img
+                }
+            }));
+        });
+    }, []);
 
     return (
         <View style={globalStyle.body}>
             <View style={globalStyle.container}>
-                {/* <Slide items={images} /> */}
+                <Slide items={images} />
             </View>
         </View>
     );

@@ -57,9 +57,9 @@ export async function getImageFromUrl(book) {
     return '';
 }
 
-export async function getAllBookImages(book) {
+export async function getAllBookImages(book, callback) {
     if (!book || !book.uid) {
-        return '';
+        callback([]);
     }
 
     const uuid = '/images/' + book.uid;
@@ -71,10 +71,12 @@ export async function getAllBookImages(book) {
     const images = await list(imagesRef);
 
     if (images.items.length > 0) {
-        return images.items.map(img => getDownloadURL(img));
+        const downloadURLs = await Promise.all(images.items.map(img => getDownloadURL(img)));
+
+        callback(downloadURLs);
     }
 
-    return '';
+    callback([]);
 }
 
 /**

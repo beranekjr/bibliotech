@@ -12,10 +12,10 @@ function carouselItem({item, index}) {
 }
 
 const Slide = ({ items, config}) => {
-    const widthSlide = config.width ? config.width : Dimensions.get('window').width
+    const widthSlide = config?.width ? config.width : Dimensions.get('window').width
     const widthItem = widthSlide
     const [activeSlide, setActiveSlide] = useState(0);
-    const layout = config.layout ? config.layout : 'default';
+    const layout = config?.layout ? config.layout : 'default';
 
     return (
         <View>

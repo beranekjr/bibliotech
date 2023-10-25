@@ -17,7 +17,7 @@ const Post = ({ book, navigation, userData }) => {
     return (
         <TouchableOpacity
             key={book?.uid}
-            onPress={() => navigation.navigate('Details')}
+            onPress={() => navigation.navigate('Details', { extraData: userData, book: book })}
             style={styles.card}
         >
             {image ?
