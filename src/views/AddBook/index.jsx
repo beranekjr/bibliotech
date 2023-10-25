@@ -86,7 +86,6 @@ const AddBook = ({ navigation, extraData }) => {
 
     return <ScrollView style={[globalStyle.body]}>
             <View style={[globalStyle.container]}>
-                <Text style={[globalStyle.title]}>Anunciar</Text>
                 <View style={styles.addBookContainer}>
                     <MyInput
                         placeholder="nome do livro"

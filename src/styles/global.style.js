@@ -44,5 +44,12 @@ export default styles = StyleSheet.create({
     },
     collapsedContainerView: {
         flex:1
+    },
+    collapsableCta: {
+        height: 50,
+        alignSelf: 'flex-start',
+        fontSize: 24,
+        paddingLeft: 12,
+        fontWeight: '500'
     }
 });

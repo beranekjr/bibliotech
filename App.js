@@ -27,6 +27,20 @@ export default function App() {
         onAuthChange(setUser, setLoading);
     }, []);
 
+    const getNavbarTitle = (title) => {
+        return {
+            title: title,
+            headerShown: true,
+            headerTransparent: true, // Para tornar o background transparente
+            headerTitleAlign: 'center', // Para alinhar o texto ao centro
+            headerTintColor: '#fff', // Para definir a cor do texto como branco
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 26
+            },
+        }
+    }
+
     if (loading) {
         return (
             <Loader />
@@ -38,41 +52,42 @@ export default function App() {
             <Stack.Navigator
                 initialRouteName='Login'
                 screenOptions={{
-                headerShown: false
+                    headerShown: false
                 }}>
 
             { user ? (
                 <>
-                    <Stack.Screen name="Feed">
+                    <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }} />
+                    <Stack.Screen name="Feed" options={{ headerShown: false }}>
                         {props => <Feed {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="AddBook">
+                    <Stack.Screen name="AddBook" options={getNavbarTitle('Anunciar')}>
                         {props => <AddBook {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="Manage">
+                    <Stack.Screen name="Manage" options={getNavbarTitle('Gerenciar')}>
                         {props => <Manage {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="Profile">
+                    <Stack.Screen name="Profile" options={getNavbarTitle('Perfil')}>
                         {props => <Profile {...props} extraData={user} />}
                     </Stack.Screen>
                     <Stack.Screen name="Register">
-                        {props => <Profile {...props} extraData={user} />}
+                        {props => <Profile {...props} extraData={user}  options={{ headerShown: false }} />}
                     </Stack.Screen>
                 </>
             ) : (
                 <>
-                    <Stack.Screen name="Feed">
+                    <Stack.Screen name="Feed"  options={{ headerShown: false }}>
                         {props => <Feed {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="AddBook">
+                    <Stack.Screen name="AddBook" options={getNavbarTitle('Anunciar')}>
                         {props => <AddBook {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="Manage">
+                    <Stack.Screen name="Manage" options={getNavbarTitle('Gerenciar')}>
                         {props => <Manage {...props} extraData={user} />}
                     </Stack.Screen>
-                    <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="Register" component={Register} />
-                    <Stack.Screen name="Details" component={Details} />
+                    <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={Register}  options={{ headerShown: false }} />
+                    <Stack.Screen name="Details" component={Details}  options={{ headerShown: false }} />
                 </>
             )}
             </Stack.Navigator>
