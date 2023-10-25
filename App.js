@@ -71,8 +71,12 @@ export default function App() {
                         {props => <Profile {...props} extraData={user} />}
                     </Stack.Screen>
                     <Stack.Screen name="Register">
-                        {props => <Profile {...props} extraData={user}  options={{ headerShown: false }} />}
+                        {props => <Register {...props} extraData={user}  options={{ headerShown: false }} />}
                     </Stack.Screen>
+                    <Stack.Screen name="Details">
+                        {props => <Details {...props} extraData={user}  options={{ headerShown: false }} />}
+                    </Stack.Screen>
+
                 </>
             ) : (
                 <>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
-import NavBar from '../../components/NavBar';
 import MyButton from '../../components/MyButton';
 import Requests from '../../components/Requests';
 import Published from '../../components/Published';
@@ -39,7 +38,6 @@ const Manage = ({navigation, extraData}) => {
                 <Borrowed ownerEmail={extraData.email} />
                 <Renting ownerEmail={extraData.email} />
             </ScrollView> */}
-            <NavBar navigation={navigation} extraData={extraData} />
         </View>
     );
 };

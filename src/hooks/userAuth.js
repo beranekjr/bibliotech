@@ -13,7 +13,8 @@ import {
     query,
     orderByChild,
     equalTo,
-    update
+    update,
+    get
 } from 'firebase/database';
 
 /**
@@ -53,37 +54,29 @@ export const getUserByEmail = (email, callback) => {
     const usersRef = ref(db, 'usuarios');
     const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
 
-    onValue(emailQuery, (snapshot) => {
-        let emailFound = false;
-        snapshot.forEach((userSnapshot) => {
-            const val = userSnapshot.val();
-            emailFound = val.email === email;
-        });
-        callback({ emailFound: emailFound });
-    });
+    get(emailQuery)
+        .then(snapshot => {
+            callback({ emailFound: snapshot.val() !== null })
+        })
+        .catch(err => {
+            callback({ emailFound: true });
+        })
 }
 
-export const updateUserEmail = (oldEmail,  newEmail, callback) => {
+export const updateUserEmail = (userKey,  newEmail, callback) => {
     const db = getDatabase(app);
 
-    const usersRef = ref(db, 'usuarios');
-    const emailQuery = query(usersRef, orderByChild('email'), equalTo(oldEmail));
+    const usersRef = ref(db, 'usuarios/' + userKey);
+    const updatedData = {
+        email: newEmail,
+    };
 
-    onValue(emailQuery, (snapshot) => {
-        snapshot.forEach((userSnapshot) => {
-            const userKey = userSnapshot.key;
-            const updatedData = {
-                email: newEmail,
-            };
-
-            update(ref(db, 'usuarios/' + userKey), updatedData, (error) => {
-                if (error) {
-                    callback({ error: true })
-                } else {
-                    callback({ success: true })
-                }
-            });
-        });
+    update(usersRef, updatedData, (error) => {
+        if (error) {
+            callback({ error: true })
+        } else {
+            callback({ success: true })
+        }
     });
 }
 

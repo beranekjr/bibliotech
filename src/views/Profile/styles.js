@@ -4,7 +4,7 @@ import { $dark_white, $white } from "../../styles/colors.style";
 
 export default styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         marginTop: 128,
         alignSelf: 'center',
@@ -13,7 +13,7 @@ export default styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     footer: {
-        flex: 1
+        // flex: 1
     },
     inputLabel: {
         color: $white,

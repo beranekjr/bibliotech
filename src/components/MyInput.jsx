@@ -12,6 +12,7 @@ const MyInput = ({ placeholder, value, onChangeText, labelName, type, customStyl
                 style={[styles.input, customStyle]}
                 keyboardType={type}
                 maxLength={maxLength || '50'}
+                secureTextEntry={placeholder === 'senha'}
             />
         </View>
     );

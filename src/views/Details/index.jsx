@@ -8,27 +8,26 @@ import Slide from '../../components/Slide';
 
 
 const Details = ({navigation}) => {
-  
-const images = [
-  {
-    url: 'https://i.imgur.com/03iuB2Um.jpg'
-  },
-  {
-    url: 'https://i.imgur.com/03iuB2Um.jpg'
-  },
-  {
-    url: 'https://i.imgur.com/03iuB2Um.jpg'
-  },
-] 
 
-  return (
-    <View style={globalStyle.body}>
-      <View style={globalStyle.container}>
-        <Slide items={images} />
-      </View>
-      <NavBar navigation={navigation} />
-    </View>
-  );
+const images = [
+    {
+        url: 'https://i.imgur.com/03iuB2Um.jpg'
+    },
+    {
+        url: 'https://i.imgur.com/03iuB2Um.jpg'
+    },
+    {
+        url: 'https://i.imgur.com/03iuB2Um.jpg'
+    },
+]
+
+    return (
+        <View style={globalStyle.body}>
+            <View style={globalStyle.container}>
+                {/* <Slide items={images} /> */}
+            </View>
+        </View>
+    );
 };
 
 const customStyles = {};

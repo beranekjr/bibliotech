@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
+
 import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
-import NavBar from '../../components/NavBar';
 import MyButton from '../../components/MyButton';
 
 import MyInput from '../../components/MyInput';
@@ -16,10 +16,9 @@ const Profile = ({navigation, extraData}) => {
 
     const submit = () => {
         if (email !== extraData.email) {
-
             getUserByEmail(email, (result) => {
                 if (!result.emailFound) {
-                    updateUserEmail(extraData.email, email, (updateResult) => {
+                    updateUserEmail(extraData.id, email, (updateResult) => {
                         if (updateResult && updateResult.success) {
 
                             extraData.email = email;
@@ -76,7 +75,6 @@ const Profile = ({navigation, extraData}) => {
                     <Text style={styles.logoutCta}>Sair</Text>
                 </TouchableOpacity>
             </View>
-            <NavBar navigation={navigation} extraData={extraData} />
         </View>
     );
 };
