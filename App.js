@@ -58,6 +58,9 @@ export default function App() {
                     <Stack.Screen name="Register">
                         {props => <Profile {...props} extraData={user} />}
                     </Stack.Screen>
+                    <Stack.Screen name="Details">
+                        {props => <Details {...props} extraData={user}/>}
+                    </Stack.Screen>
                 </>
             ) : (
                 <>
@@ -72,7 +75,6 @@ export default function App() {
                     </Stack.Screen>
                     <Stack.Screen name="Login" component={Login} />
                     <Stack.Screen name="Register" component={Register} />
-                    <Stack.Screen name="Details" component={Details} />
                 </>
             )}
             </Stack.Navigator>

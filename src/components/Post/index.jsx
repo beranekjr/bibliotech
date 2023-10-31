@@ -5,7 +5,7 @@ import Loader from '../Loader';
 
 import { getImageFromUrl } from '../../hooks/images';
 
-const Post = ({ book, navigation, userData }) => {
+const Post = ({ book, userData, navigation }) => {
     const [image, setImage] = useState('');
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const Post = ({ book, navigation, userData }) => {
 
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('Details')}
+            onPress={() => navigation.navigate('Details', { bookId: book.uid })}
             style={styles.card}
         >
             {image ?
@@ -29,6 +29,7 @@ const Post = ({ book, navigation, userData }) => {
             {
                 book ?
                     <View style={styles.cardInfo}>
+                        <Text style={styles.title}>{book.uid}</Text>
                         <Text style={styles.title}>{book.name}</Text>
                         <View style={styles.info}>
                             <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.text}>publicado por:</Text>
