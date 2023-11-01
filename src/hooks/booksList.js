@@ -81,7 +81,7 @@ export function getBooksByOwner(owner, callback) {
 export function getBookByUid(uid, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
-    let booksQuery = query(booksRef, orderByChild('uid', equalTo(uid)));
+    let booksQuery = query(booksRef, orderByChild('uid'), equalTo(uid));
 
     get(booksQuery)
         .then(snapshot => callback(snapshot.val()))
