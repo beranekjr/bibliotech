@@ -1,7 +1,8 @@
-# bibliotech
-Aplicativo de gerenciamento de emprestimo de livros de usuarios da mesma cidade
+# Introdução
+Bibliotech é uma aplicação de gerenciamento de empréstimo de livros de usuarios da mesma cidade. 
+O usuário pode: Criar uma conta, divulgar livros para emprestar ou alugar livros de outras pessoas.
 
 # Instalação
-- cd bibliotech
-- rodar npm install
-- npx expo
+No diretório bibliotech rode os seguintes comandos
+- npm install - instala as dependências
+- npx expo - roda a aplicação em modo de teste
