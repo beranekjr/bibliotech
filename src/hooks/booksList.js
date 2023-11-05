@@ -55,7 +55,11 @@ export function listBooks(startAt, callback) {
             const booksArray = [];
             snapshot.forEach(childSnapshot => {
                 const bookData = childSnapshot.val();
-                booksArray.push(bookData);
+
+                let bookObj = bookData;
+                bookData.referenceId = childSnapshot.key;
+
+                booksArray.push(bookObj);
             });
             callback({
                 books: booksArray,
