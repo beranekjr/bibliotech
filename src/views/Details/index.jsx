@@ -5,7 +5,7 @@ import styles from './styles';
 import globalStyle from '../../styles/global.style';
 import { getBookByUid } from '../../hooks/booksList';
 import Loader from '../../components/Loader';
-
+import MyButton from '../../components/MyButton';
 import NavBar from '../../components/NavBar';
 import Slide from '../../components/Slide';
 
@@ -17,22 +17,29 @@ const Details = ({ route, navigation }) => {
     const { book, extraData } = route.params;
     const { bookId } = route.params;
     const [books, setBooks] = useState(null);
-    const getFeedItems = () => {
-      getBookByUid(bookId, (result) => {
-          setBooks(result.books);
-          console.log(books)
-      });
-  };
+    // const getFeedItems = () => {
+    //   getBookByUid(book.uid, (result) => {
+    //       setBooks(result.books);
+    //       console.log(books, 123)
+    //   });
+    // };
 
     useEffect(() => {
-        getAllBookImages(book, (imagesResponse) => {
+        console.log(extraData)
+        getAllBookImages(book.uid, (imagesResponse) => {
             setImages(imagesResponse.map(img => {
                 return {
                     url: img
                 }
             }));
         });
-        getFeedItems();
+        getBookByUid(book.uid, (result) => {
+            if (result) {
+                setBooks(result)
+            } else {
+                console.log('Nenhum livro encontrado para o UID:', uid);
+            }
+        });
     }, []);
 
     return (
@@ -42,7 +49,22 @@ const Details = ({ route, navigation }) => {
       {books ? (
         books.map((item) => (
             <View key={item.uid}>
-                <Text>{item.name}</Text>
+                <View style={globalStyle.mb1}>
+                    <Text style={styles.name}>{item.name}</Text>
+                    <Text style={styles.warn}>devolução em: {item.rentTime} dias</Text>
+                </View>
+                <View style={globalStyle.mb1}>
+                <Text style={styles.title}>Descrição:</Text>
+                    <Text style={styles.description}>{item.description}</Text>
+                </View>
+                <View style={globalStyle.mb5}>
+                    <Text style={styles.title}>Informações do anunciante:</Text>
+                    <Text style={styles.description}>Local: {item.local}</Text>
+                    <Text style={styles.description}>Contato: {item.owner}</Text>
+                </View>
+                <MyButton
+                    label={item.pending && extraData.email ===  item.owner ? 'Solicitar aluguel' : 'Livro não disponivel no momento'}
+                />
             </View>
         ))
         ) : (
