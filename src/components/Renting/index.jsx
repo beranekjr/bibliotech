@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, ScrollView, Text, Alert } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
-import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
+import Loader from '../Loader';
 
 import { getRentedBooksByOwner } from '../../hooks/booksRent';
 
-const Renting = ({ ownerEmail }) => {
+const Renting = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
 
@@ -25,13 +25,26 @@ const Renting = ({ ownerEmail }) => {
     };
 
     const renderItemCard = (booksList) => {
-        return booksList.map(book => {
-            return (
+        if (booksList.length > 0) {
+            const filteredBooks = booksList
+              .filter(book => book.owner === ownerEmail);
+
+            if (filteredBooks.length > 0) {
+              return filteredBooks.map(book => (
                 <>
-                    <Post book={book}></Post>
+                    <Post navigation={navigation} book={book} userData={{ email: ownerEmail }}></Post>
                 </>
-            )
-        });
+              ));
+            } else {
+              return <Text style={globalStyle.text}>Nenhuma publicação</Text>;
+            }
+          } else {
+            return (
+              <>
+                <Loader />
+              </>
+            );
+          }
     }
 
     return <View style={globalStyle.manageItemContainer}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, ScrollView, Text, Alert } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text, Alert } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
 import styles from './styles';
@@ -7,10 +7,11 @@ import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
+import Loader from '../Loader';
 
 import { getBorrowedBooks, resetBookStatus } from '../../hooks/booksRent';
 
-const Borrowed = ({ ownerEmail }) => {
+const Borrowed = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
 
@@ -47,14 +48,27 @@ const Borrowed = ({ ownerEmail }) => {
     }
 
     const renderItemCard = (booksList) => {
-        return booksList.map(book => {
-            return (
+        if (booksList.length > 0) {
+            const filteredBooks = booksList
+              .filter(book => book.owner === ownerEmail);
+
+            if (filteredBooks.length > 0) {
+              return filteredBooks.map(book => (
                 <>
-                    <Post book={book}></Post>
+                    <Post navigation={navigation} book={book} userData={{ email: ownerEmail }}></Post>
                     <RentedCta bookReferenceId={book.referenceId}/>
                 </>
-            )
-        });
+              ));
+            } else {
+              return <Text style={globalStyle.text}>Nenhuma emprestado</Text>;
+            }
+          } else {
+            return (
+              <>
+                <Loader />
+              </>
+            );
+          }
     }
 
     return <View style={globalStyle.manageItemContainer}>

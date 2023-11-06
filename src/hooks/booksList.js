@@ -55,7 +55,11 @@ export function listBooks(startAt, callback) {
             const booksArray = [];
             snapshot.forEach(childSnapshot => {
                 const bookData = childSnapshot.val();
-                booksArray.push(bookData);
+
+                let bookObj = bookData;
+                bookData.referenceId = childSnapshot.key;
+
+                booksArray.push(bookObj);
             });
             callback({
                 books: booksArray,
@@ -68,7 +72,7 @@ export function listBooks(startAt, callback) {
 export function getBooksByOwner(owner, callback) {
     const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
-    let booksQuery = query(booksRef, orderByChild('owner', equalTo(owner)));
+    const booksQuery = query(booksRef, orderByChild('owner', equalTo(owner)));
 
     get(booksQuery)
         .then(snapshot => {
@@ -80,11 +84,19 @@ export function getBooksByOwner(owner, callback) {
 
 export function getBookByUid(uid, callback) {
     const db = getDatabase(app);
-    const booksRef = ref(db, 'livros_list');
+    const booksRef = ref(db, `livros_list`);
     let booksQuery = query(booksRef, orderByChild('uid'), equalTo(uid));
 
     get(booksQuery)
-        .then(snapshot => callback(snapshot.val()))
+        .then(snapshot => {
+            const booksArray = [];
+
+            snapshot.forEach(childSnapshot => {
+                booksArray.push(parseBooksList(childSnapshot.val(), null));
+            });
+
+            callback(booksArray);
+        })
         .catch(err => callback(err));
 }
 

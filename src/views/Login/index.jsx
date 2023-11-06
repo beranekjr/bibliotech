@@ -39,11 +39,10 @@ const Login = ({ navigation }) => {
     return (
         <View style={globalStyle.body}>
             <View style={globalStyle.container}>
-                <Image
-                    source={logo}
-                />
+                <Text style={[globalStyle.title]}>MateriAloca</Text>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Nossa plataforma intuitiva permite aos usuários compartilhar seus materiais ou livros acadêmicos.</Text>
                 <View>
-                    <Text style={globalStyle.title}>Login</Text>
+                    <Text style={[globalStyle.title, { fontSize: 20, marginBottom: 0, marginTop: 20 }]}>Login</Text>
                     <MyInput
                         placeholder="e-mail"
                         type={'email-address'}

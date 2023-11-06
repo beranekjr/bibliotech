@@ -5,7 +5,7 @@ import Loader from '../Loader';
 
 import { getImageFromUrl } from '../../hooks/images';
 
-const Post = ({ book, navigation, userData }) => {
+const Post = ({ book, userData, navigation }) => {
     const [image, setImage] = useState('');
 
     useEffect(() => {

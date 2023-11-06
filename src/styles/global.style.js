@@ -14,6 +14,12 @@ export default styles = StyleSheet.create({
         padding: 20,
         marginTop: 60
     },
+    mb1: {
+        marginBottom: 12,
+    },
+    mb5: {
+        marginBottom: 32,
+    },
     text: {
         textAlign: 'center',
         color: $white,
