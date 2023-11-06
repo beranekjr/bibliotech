@@ -92,8 +92,7 @@ export function getBookByUid(uid, callback) {
             const booksArray = [];
 
             snapshot.forEach(childSnapshot => {
-                const book = childSnapshot.val();
-                booksArray.push(book);
+                booksArray.push(parseBooksList(childSnapshot.val(), null));
             });
 
             callback(booksArray);

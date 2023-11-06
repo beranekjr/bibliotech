@@ -10,7 +10,7 @@ import Post from '../Post';
 import Loader from '../Loader';
 import { getBooksByOwner, removeBookByReferenceId } from '../../hooks/booksList';
 
-const Published = ({ ownerEmail }) => {
+const Published = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
 
@@ -56,11 +56,11 @@ const Published = ({ ownerEmail }) => {
         if (booksList.length > 0) {
             const filteredBooks = booksList
               .filter(book => book.owner === ownerEmail);
-          
+
             if (filteredBooks.length > 0) {
               return filteredBooks.map(book => (
                 <>
-                  <Post book={book}></Post>
+                  <Post navigation={navigation} book={book} userData={{ email: ownerEmail }}></Post>
                   <PublishedCtas bookReferenceId={book.referenceId} />
                 </>
               ));

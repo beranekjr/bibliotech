@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
 import styles from './styles';
@@ -11,7 +11,7 @@ import Loader from '../Loader';
 
 import { getRentSolicitations, acceptSolicitation, rejectSolicitation} from '../../hooks/booksRent';
 
-const Requests = ({ ownerEmail }) => {
+const Requests = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
 
@@ -72,11 +72,11 @@ const Requests = ({ ownerEmail }) => {
         if (booksList.length > 0) {
             const filteredBooks = booksList
               .filter(book => book.owner === ownerEmail);
-          
+
             if (filteredBooks.length > 0) {
               return filteredBooks.map(book => (
                 <>
-                    <Post book={book}></Post>
+                    <Post navigation={navigation} book={book}  userData={{ email: ownerEmail }}></Post>
                     <RequestsCtas
                         key={book.uid}
                         book={book}

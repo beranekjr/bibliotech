@@ -22,22 +22,11 @@ const Manage = ({navigation, extraData}) => {
             <View
                 StickyHeaderComponent={true}
                 styles={[globalStyle.scrollView, styles.accordion]}>
-                <Requests ownerEmail={extraData.email}/>
-                <Published ownerEmail={extraData.email} />
-                <Borrowed ownerEmail={extraData.email} />
-                <Renting ownerEmail={extraData.email} />
+                <Requests navigation={navigation} ownerEmail={extraData.email}/>
+                <Published navigation={navigation} ownerEmail={extraData.email} />
+                <Borrowed navigation={navigation} ownerEmail={extraData.email} />
+                <Renting navigation={navigation} ownerEmail={extraData.email} />
             </View>
-
-            {/*
-                TODO comparar esse codigo com o acima pra checar qual melhor opcai
-            <ScrollView
-                StickyHeaderComponent={true}
-                styles={[globalStyle.scrollView, styles.accordion]}>
-                <Requests ownerEmail={extraData.email}/>
-                <Published ownerEmail={extraData.email} />
-                <Borrowed ownerEmail={extraData.email} />
-                <Renting ownerEmail={extraData.email} />
-            </ScrollView> */}
         </View>
     );
 };

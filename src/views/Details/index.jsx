@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 
 import styles from './styles';
 import globalStyle from '../../styles/global.style';
@@ -15,93 +15,97 @@ import { rentBook } from '../../hooks/booksRent';
 const Details = ({ route, navigation }) => {
 
     const [images, setImages] = useState([]);
-    const { book, extraData } = route.params;
-    const { bookId } = route.params;
-    const [books, setBooks] = useState(null);
+    const { extraData } = route.params;
+
+    const [book, setBook] = useState(route.params.book);
     const [label, setLabel] = useState('');
     const [status, setStatus] = useState();
+    const [showContact, setShowContact] = useState(false);
+
     const getLabel = (owner, pending, tenant) => {
-        const user = extraData.user
-        console.log(pending)
-        console.log(tenant)
-        console.log(owner)
+        const user = extraData.email;
         if (pending === false && tenant === '') {
             setLabel('Solicitar aluguel');
             setStatus(false);
-        } else if (user === owner) {
+        } else if (pending === true && user === tenant) {
             setLabel('Você já alugou esse livro');
-            setStatus(false);
-        } else if (pending === false && user === owner) {
+            setStatus(true);
+        } else if (pending === false && user === tenant) {
             setLabel('Você alugou esse livro');
-            setStatus(false);
+            setStatus(true);
+            setShowContact(true);
+        } else if (user === book.owner) {
+            setLabel('Este livro é seu');
+            setStatus(true);
+            setShowContact(true);
         } else {
             setLabel('Outra situação');
             setStatus(true);
         }
     };
-    const requestRent = (uid, email) => {
-        console.log(uid, email)
-        rentBook(email, uid, (response) => {
+    const requestRent = (referenceId, email) => {
+        rentBook(email, referenceId, (response) => {
             if (response.success) {
                 Alert.alert('Solicitação de aluguel enviada! Aguarde o contato do fornecedor.');
             } else {
-                removeImages(uid)
+                Alert.alert('Alguma coisa deu errado, tente novamente mais tarde!');
             }
+
+            getBookByUid(book?.uid, (books) => {
+                if (Array.isArray(books) && books.length > 0) {
+                    setBook(books[0]);
+                }
+            });
+
+            getLabel(book.owner, book.pending, book.user);
         });
     }
-    
+
     useEffect(() => {
-        getAllBookImages(book.uid, (imagesResponse) => {
+        setBook(route.params.book);
+
+        getAllBookImages(book, (imagesResponse) => {
             setImages(imagesResponse.map(img => {
                 return {
                     url: img
                 }
             }));
         });
-        getBookByUid(book.uid, (result) => {
-            if (result) {
-                setBooks(result)
-                getLabel(result[0].owner, result[0].pending, result[0].user)
-            } else {
-                console.log('Nenhum livro encontrado para o UID:', uid);
-            }
-        });
-        
+
+        getLabel(book?.owner, book?.pending, book?.user);
     }, []);
 
     return (
       <View style={globalStyle.body}>
-      <Slide items={images} config={ {width: 396, heigth: 396 } } />
-      <View style={globalStyle.container}>
-      {books ? (
-        books.map((item) => (
-            <View key={item.uid}>
-                <View style={globalStyle.mb1}>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.warn}>devolução em: {item.rentTime} dias</Text>
+        <Slide items={images} config={ {width: 396, heigth: 396 } } />
+        <View style={globalStyle.container}>
+        {book ? (
+                <View key={book?.uid}>
+                    <View style={globalStyle.mb1}>
+                        <Text style={styles.name}>{book?.name}</Text>
+                        <Text style={styles.warn}>devolução em: {book?.rentTime} dias</Text>
+                    </View>
+                    <View style={globalStyle.mb1}>
+                    <Text style={styles.title}>Descrição:</Text>
+                        <Text style={styles.description}>{book?.description}</Text>
+                    </View>
+                    <View style={globalStyle.mb5}>
+                        <Text style={styles.title}>Informações do anunciante:</Text>
+                        <Text style={styles.description}>Local: {book?.local}</Text>
+                        <Text style={styles.description}>Contato: {showContact === true ? book?.owner : 'Disponível após usuario aceitar aluguel'}</Text>
+                    </View>
+                    <MyButton
+                        disabled={status}
+                        label={label}
+                        onPress={()=> requestRent(book?.referenceId, extraData.email)}
+                    />
                 </View>
-                <View style={globalStyle.mb1}>
-                <Text style={styles.title}>Descrição:</Text>
-                    <Text style={styles.description}>{item.description}</Text>
-                </View>
-                <View style={globalStyle.mb5}>
-                    <Text style={styles.title}>Informações do anunciante:</Text>
-                    <Text style={styles.description}>Local: {item.local}</Text>
-                    <Text style={styles.description}>Contato: {item.owner}</Text>
-                </View>
-                <MyButton
-                    disabled={status}
-                    label={label}
-                    onPress={()=> requestRent(item.uid, item.owner)}
-                />
-            </View>
-        ))
-        ) : (
-            < Loader />
-        )
-    }
-      </View>
-      <NavBar navigation={navigation} />
+            ) : (
+                < Loader />
+            )
+        }
+        </View>
+        <NavBar navigation={navigation} />
     </View>
     );
 };

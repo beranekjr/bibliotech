@@ -75,8 +75,6 @@ export async function getAllBookImages(book, callback) {
 
         callback(downloadURLs);
     }
-
-    callback([]);
 }
 
 /**
