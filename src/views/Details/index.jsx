@@ -10,6 +10,7 @@ import NavBar from '../../components/NavBar';
 import Slide from '../../components/Slide';
 
 import { getAllBookImages } from '../../hooks/images';
+import { rentBook } from '../../hooks/booksRent';
 
 const Details = ({ route, navigation }) => {
 
@@ -17,15 +18,39 @@ const Details = ({ route, navigation }) => {
     const { book, extraData } = route.params;
     const { bookId } = route.params;
     const [books, setBooks] = useState(null);
-    // const getFeedItems = () => {
-    //   getBookByUid(book.uid, (result) => {
-    //       setBooks(result.books);
-    //       console.log(books, 123)
-    //   });
-    // };
-
+    const [label, setLabel] = useState('');
+    const [status, setStatus] = useState();
+    const getLabel = (owner, pending, tenant) => {
+        const user = extraData.user
+        console.log(pending)
+        console.log(tenant)
+        console.log(owner)
+        if (pending === false && tenant === '') {
+            setLabel('Solicitar aluguel');
+            setStatus(false);
+        } else if (user === owner) {
+            setLabel('Você já alugou esse livro');
+            setStatus(false);
+        } else if (pending === false && user === owner) {
+            setLabel('Você alugou esse livro');
+            setStatus(false);
+        } else {
+            setLabel('Outra situação');
+            setStatus(true);
+        }
+    };
+    const requestRent = (uid, email) => {
+        console.log(uid, email)
+        rentBook(email, uid, (response) => {
+            if (response.success) {
+                Alert.alert('Solicitação de aluguel enviada! Aguarde o contato do fornecedor.');
+            } else {
+                removeImages(uid)
+            }
+        });
+    }
+    
     useEffect(() => {
-        console.log(extraData)
         getAllBookImages(book.uid, (imagesResponse) => {
             setImages(imagesResponse.map(img => {
                 return {
@@ -36,10 +61,12 @@ const Details = ({ route, navigation }) => {
         getBookByUid(book.uid, (result) => {
             if (result) {
                 setBooks(result)
+                getLabel(result[0].owner, result[0].pending, result[0].user)
             } else {
                 console.log('Nenhum livro encontrado para o UID:', uid);
             }
         });
+        
     }, []);
 
     return (
@@ -63,7 +90,9 @@ const Details = ({ route, navigation }) => {
                     <Text style={styles.description}>Contato: {item.owner}</Text>
                 </View>
                 <MyButton
-                    label={item.pending && extraData.email ===  item.owner ? 'Solicitar aluguel' : 'Livro não disponivel no momento'}
+                    disabled={status}
+                    label={label}
+                    onPress={()=> requestRent(item.uid, item.owner)}
                 />
             </View>
         ))

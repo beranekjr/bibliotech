@@ -7,6 +7,7 @@ import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
+import Loader from '../Loader';
 
 import { getRentedBooksByOwner } from '../../hooks/booksRent';
 
@@ -25,13 +26,26 @@ const Renting = ({ ownerEmail }) => {
     };
 
     const renderItemCard = (booksList) => {
-        return booksList.map(book => {
-            return (
+        if (booksList.length > 0) {
+            const filteredBooks = booksList
+              .filter(book => book.owner === ownerEmail);
+          
+            if (filteredBooks.length > 0) {
+              return filteredBooks.map(book => (
                 <>
                     <Post book={book}></Post>
                 </>
-            )
-        });
+              ));
+            } else {
+              return <Text style={globalStyle.text}>Nenhuma publicação</Text>;
+            }
+          } else {
+            return (
+              <>
+                <Loader />
+              </>
+            );
+          }
     }
 
     return <View style={globalStyle.manageItemContainer}>

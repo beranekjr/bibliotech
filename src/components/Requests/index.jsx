@@ -7,6 +7,7 @@ import globalStyle from '../../styles/global.style';
 
 import MyButton from '../MyButton';
 import Post from '../Post';
+import Loader from '../Loader';
 
 import { getRentSolicitations, acceptSolicitation, rejectSolicitation} from '../../hooks/booksRent';
 
@@ -67,8 +68,13 @@ const Requests = ({ ownerEmail }) => {
     }
 
     const renderItemCard = (booksList) => {
-        return booksList.map(book => {
-            return (
+        console.log(booksList)
+        if (booksList.length > 0) {
+            const filteredBooks = booksList
+              .filter(book => book.owner === ownerEmail);
+          
+            if (filteredBooks.length > 0) {
+              return filteredBooks.map(book => (
                 <>
                     <Post book={book}></Post>
                     <RequestsCtas
@@ -76,8 +82,17 @@ const Requests = ({ ownerEmail }) => {
                         book={book}
                         onPress={() => updateBookList(book.referenceId)}/>
                 </>
-            )
-        })
+              ));
+            } else {
+              return <Text style={globalStyle.text}>Nenhuma solicitação</Text>;
+            }
+          } else {
+            return (
+              <>
+                <Loader />
+              </>
+            );
+          }
     }
 
     return <View style={globalStyle.manageItemContainer}>

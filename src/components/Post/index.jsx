@@ -30,7 +30,6 @@ const Post = ({ book, userData, navigation }) => {
             {
                 book ?
                     <View style={styles.cardInfo}>
-                        <Text style={styles.title}>{book.uid}</Text>
                         <Text style={styles.title}>{book.name}</Text>
                         <View style={styles.info}>
                             <Text  numberOfLines={1} ellipsizeMode='tail' style={styles.text}>publicado por:</Text>
