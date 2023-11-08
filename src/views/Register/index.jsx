@@ -37,8 +37,10 @@ const Register = ({ navigation }) => {
     return (
         <View style={globalStyle.body}>
             <View style={globalStyle.container}>
-                <Text style={[globalStyle.title]}>MateriAloca</Text>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Nossa plataforma intuitiva permite aos usuários compartilhar seus materiais ou livros acadêmicos.</Text>
+                <Text style={[globalStyle.logo]}>MateriAloca</Text>
+                <Text style={{ color: 'white', alignSelf: 'center'}}>
+                    Nossa plataforma permite a você compartilhar ou alugar materiais ou livros acadêmicos.
+                </Text>
                 <View>
                 <Text style={[globalStyle.title, { fontSize: 20, marginBottom: 0, marginTop: 20 }]}>Crie sua conta</Text>
                     <MyInput

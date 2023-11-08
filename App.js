@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { StatusBar, View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import Loader from './src/components/Loader';
 import Manage from './src/views/Manage';
@@ -49,6 +49,7 @@ export default function App() {
 
     return (
         <NavigationContainer>
+            <StatusBar/>
             <Stack.Navigator
                 initialRouteName='Login'
                 screenOptions={{
@@ -58,7 +59,7 @@ export default function App() {
             { user ? (
                 <>
                     <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }} />
-                    <Stack.Screen name="Feed" options={{ headerShown: false }}>
+                    <Stack.Screen name="Feed" options={getNavbarTitle('Anúncios')}>
                         {props => <Feed {...props} extraData={user} />}
                     </Stack.Screen>
                     <Stack.Screen name="AddBook" options={getNavbarTitle('Anunciar')}>

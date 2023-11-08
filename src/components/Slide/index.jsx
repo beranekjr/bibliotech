@@ -16,9 +16,6 @@ const Slide = ({ items, config}) => {
     const widthItem = widthSlide
     const [activeSlide, setActiveSlide] = useState(0);
     const layout = config?.layout ? config.layout : 'default';
-
-    console.log('aqui', items)
-
     return (
         <View>
             <Carousel

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
+import up from '../../assets/up.png';
+import down from '../../assets/down.png';
+
 const CollapsibleComponent = ({ content }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 

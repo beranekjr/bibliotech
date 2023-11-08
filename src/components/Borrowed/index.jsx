@@ -76,6 +76,8 @@ const Borrowed = ({ ownerEmail, navigation }) => {
             customStyle={globalStyle.collapsableCta}
             label='Emprestados'
             onPress={() => setCollapsed(!isCollapsed)}
+            isCollaps={true}
+            collapsed={isCollapsed}
         />
         <Collapsible
             style={globalStyle.collapsedContainer}

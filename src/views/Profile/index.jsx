@@ -5,7 +5,7 @@ import styles from './styles';
 import globalStyle from '../../styles/global.style';
 
 import MyButton from '../../components/MyButton';
-
+import NavBar from '../../components/NavBar';
 import MyInput from '../../components/MyInput';
 
 import { logout, updateUserEmail, getUserByEmail } from '../../hooks/userAuth';
@@ -75,6 +75,7 @@ const Profile = ({navigation, extraData}) => {
                     <Text style={styles.logoutCta}>Sair</Text>
                 </TouchableOpacity>
             </View>
+            <NavBar navigation={navigation} extraData={extraData} />
         </View>
     );
 };

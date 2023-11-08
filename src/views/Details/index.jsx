@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, StatusBar } from 'react-native';
 
 import styles from './styles';
 import globalStyle from '../../styles/global.style';
@@ -77,6 +77,7 @@ const Details = ({ route, navigation }) => {
 
     return (
       <View style={globalStyle.body}>
+        <StatusBar/>
         <Slide items={images} config={ {width: 396, heigth: 396 } } />
         <View style={globalStyle.container}>
         {book ? (

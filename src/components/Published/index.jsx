@@ -81,6 +81,8 @@ const Published = ({ ownerEmail, navigation }) => {
             customStyle={globalStyle.collapsableCta}
             label='Publicados'
             onPress={() => setCollapsed(!isCollapsed)}
+            isCollaps={true}
+            collapsed={isCollapsed}
         />
         <Collapsible
             style={globalStyle.collapsedContainer}

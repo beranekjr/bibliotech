@@ -34,6 +34,16 @@ export default styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 30,
     },
+    logo: {
+        textAlign: 'center',
+        color: $white,
+        fontSize: 36,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        padding: 20,
+        borderRadius: 22,
+        backgroundColor: $black,
+    },
     manageItemContainer: {
         padding: 0,
         backgroundColor: $black,

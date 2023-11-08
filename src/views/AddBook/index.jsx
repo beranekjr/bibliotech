@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView, Alert, StatusBar } from 'react-native';
 import uuid from 'react-native-uuid';
 import { launchImageLibraryAsync, MediaTypeOptions, useMediaLibraryPermissions } from 'expo-image-picker';
 
@@ -85,6 +85,7 @@ const AddBook = ({ navigation, extraData }) => {
     }
 
     return <ScrollView style={[globalStyle.body]}>
+        <StatusBar/>
             <View style={[globalStyle.container]}>
                 <View style={styles.addBookContainer}>
                     <MyInput

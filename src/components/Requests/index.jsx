@@ -68,7 +68,6 @@ const Requests = ({ ownerEmail, navigation }) => {
     }
 
     const renderItemCard = (booksList) => {
-        console.log(booksList)
         if (booksList.length > 0) {
             const filteredBooks = booksList
               .filter(book => book.owner === ownerEmail);
@@ -98,8 +97,10 @@ const Requests = ({ ownerEmail, navigation }) => {
     return <View style={globalStyle.manageItemContainer}>
         <MyButton
             customStyle={globalStyle.collapsableCta}
-            label='Solicitacoes'
+            label='Solicitações'
             onPress={() => setCollapsed(!isCollapsed)}
+            isCollaps={true}
+            collapsed={isCollapsed}
         />
         <Collapsible
             style={globalStyle.collapsedContainer}

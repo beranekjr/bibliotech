@@ -52,6 +52,8 @@ const Renting = ({ ownerEmail, navigation }) => {
             customStyle={globalStyle.collapsableCta}
             label='Alugados'
             onPress={() => setCollapsed(!isCollapsed)}
+            isCollaps={true}
+            collapsed={isCollapsed}
         />
         <Collapsible
             style={globalStyle.collapsedContainer}

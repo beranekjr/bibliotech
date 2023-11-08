@@ -11,6 +11,8 @@ import Loader from '../../components/Loader';
 
 const Feed = ({navigation, extraData}) => {
     const [search, setSearch] = useState('');
+    const [filteredBooks, setFilteredBooks] = useState([]);
+    const [searchStarted, setSearchStarted] = useState(false);
     const [books, setBooks] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [pageIndex, setPageIndex] = useState(0);
@@ -35,6 +37,20 @@ const Feed = ({navigation, extraData}) => {
         getFeedItems();
     }, []);
 
+    const handleSearch = (text) => {
+        setSearch(text);
+    
+        if (text === '') {
+          setFilteredBooks([]);
+          setSearchStarted(false);
+        } else {
+          const filtered = books.filter((book) =>
+            book.name.toLowerCase().includes(text.toLowerCase())
+          );
+          setFilteredBooks(filtered);
+          setSearchStarted(true);
+        }
+      };
     return (
         <View style={globalStyle.body}>
             <ScrollView
@@ -49,22 +65,22 @@ const Feed = ({navigation, extraData}) => {
                             placeholder="Procurar"
                             type={'default'}
                             value={search}
-                            onChangeText={setSearch}
+                            onChangeText={handleSearch}
                             maxLength={30}
                             customStyle={customStyles.input}
                             />
                     </View>
-                    {books ? (
-                        books.map((book) => (
+                    {searchStarted
+                        ? filteredBooks?.map((book) => (
                             <View key={book.uid}>
                                 <Post navigation={navigation} book={book} userData={extraData}></Post>
                             </View>
-                        ))
-
-                        ) : (
-                            < Loader />
-                        )
-                    }
+                            ))
+                        : books?.map((book) => (
+                            <View key={book.uid}>
+                                <Post navigation={navigation} book={book} userData={extraData}></Post>
+                            </View>
+                    ))}
                 </View>
             </ScrollView>
             <NavBar navigation={navigation} extraData={extraData} />

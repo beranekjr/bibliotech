@@ -8,6 +8,7 @@ import Requests from '../../components/Requests';
 import Published from '../../components/Published';
 import Borrowed from '../../components/Borrowed';
 import Renting from '../../components/Renting';
+import NavBar from '../../components/NavBar';
 
 const Manage = ({navigation, extraData}) => {
     return (
@@ -27,6 +28,7 @@ const Manage = ({navigation, extraData}) => {
                 <Borrowed navigation={navigation} ownerEmail={extraData.email} />
                 <Renting navigation={navigation} ownerEmail={extraData.email} />
             </View>
+            <NavBar navigation={navigation} extraData={extraData} />
         </View>
     );
 };

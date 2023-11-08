@@ -8,16 +8,17 @@ import manage from '../../assets/navbar/manage.png';
 const NavBar = ({ navigation, extraData }) => {
   return (
     <View style={styles.navbar}>
-      <TouchableOpacity onPress={() => navigation.navigate('Manage', extraData)}>
-        <Image
-          source={manage}
-        />
-      </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Feed', extraData)}>
         <Image
           source={home}
         />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Manage', extraData)}>
+        <Image
+          source={manage}
+        />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate('Profile', extraData)}>
         <Image
           source={profile}
