@@ -48,26 +48,29 @@ const Borrowed = ({ ownerEmail, navigation }) => {
     }
 
     const renderItemCard = (booksList) => {
-        if (booksList.length > 0) {
-            const filteredBooks = booksList
-              .filter(book => book.owner === ownerEmail);
-
-            if (filteredBooks.length > 0) {
-              return filteredBooks.map(book => (
-                <>
-                    <Post navigation={navigation} book={book} userData={{ email: ownerEmail }}></Post>
-                    <RentedCta bookReferenceId={book.referenceId}/>
-                </>
-              ));
-            } else {
-              return <Text style={globalStyle.text}>Nenhuma emprestado</Text>;
-            }
-          } else {
+        if (booksList === null) {
             return (
               <>
                 <Loader />
               </>
             );
+          } else if (booksList.length > 0) {
+            const filteredBooks = booksList.filter(book => book.owner === ownerEmail);
+          
+            if (filteredBooks.length > 0) {
+              return filteredBooks.map(book => (
+                <Post
+                  key={book.id}
+                  navigation={navigation}
+                  book={book}
+                  userData={{ email: ownerEmail }}
+                />
+              ));
+            } else {
+              return <Text style={globalStyle.text}>Nenhum emprestado</Text>;
+            }
+          } else {
+            return <Text style={globalStyle.text}>Nenhum emprestado</Text>;
           }
     }
 
