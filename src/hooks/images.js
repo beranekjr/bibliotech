@@ -9,8 +9,9 @@ import {
 } from 'firebase/storage';
 
 import app from '../../firebase.config';
+import initializeStorage from '../database/storage';
 
-let storage = null;
+let storage = initializeStorage(app);
 
 /**
  * @param {array} images array de imagens a serem feitas o upload
@@ -18,8 +19,6 @@ let storage = null;
  * @returns
  */
 export function uploadImagesHook(images, uid) {
-    const storage = getStorage(app);
-
     return images.map(async (imageUri) => {
         const response = await fetch(imageUri);
         const blob = await response.blob();
@@ -43,9 +42,6 @@ export async function getImageFromUrl(book) {
     }
 
     const uuid = '/images/' + book.uid;
-    if (!storage) {
-        storage = getStorage(app);
-    }
 
     const imagesRef = ref(storage, uuid);
     const images = await list(imagesRef, {  maxResults: 1 });
@@ -63,9 +59,6 @@ export async function getAllBookImages(book, callback) {
     }
 
     const uuid = '/images/' + book.uid;
-    if (!storage) {
-        storage = getStorage(app);
-    }
 
     const imagesRef = ref(storage, uuid);
     const images = await list(imagesRef);
@@ -83,9 +76,6 @@ export async function getAllBookImages(book, callback) {
  */
 export async function removeImages(uid) {
     const uuid = '/images/' + uid;
-    if (!storage) {
-        storage = getStorage(app);
-    }
 
     const imagesRef = ref(storage, uuid);
     const images = await listAll(imagesRef);

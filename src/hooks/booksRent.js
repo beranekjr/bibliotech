@@ -10,9 +10,11 @@ import {
 import app from '../../firebase.config';
 
 import { parseBooksList } from './helpers';
+import initializeDatabase from '../database/database';
+
+let db = initializeDatabase(app);
 
 export function getRentedBooksByOwner(owner, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const booksQuery = query(booksRef, orderByChild('user'), equalTo(owner));
 
@@ -24,7 +26,6 @@ export function getRentedBooksByOwner(owner, callback) {
 }
 
 export function getBorrowedBooks(owner, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const booksQuery = query(booksRef, orderByChild('owner'), equalTo(owner));
 
@@ -38,7 +39,6 @@ export function getBorrowedBooks(owner, callback) {
 }
 
 export function rentBook(owner, bookId, callback) {
-    const db = getDatabase(app);
     const bookRef = ref(db, `livros_list/${bookId}`);
     update(bookRef, {
         user: owner,
@@ -49,7 +49,6 @@ export function rentBook(owner, bookId, callback) {
 }
 
 export function getRentSolicitations(owner, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const booksQuery = query(booksRef, orderByChild('owner'), equalTo(owner));
 
@@ -63,7 +62,6 @@ export function getRentSolicitations(owner, callback) {
 }
 
 export function acceptSolicitation(bookId, callback) {
-    const db = getDatabase(app);
     const bookRef = ref(db, `livros_list/${bookId}`);
 
     update(bookRef, {
@@ -74,7 +72,6 @@ export function acceptSolicitation(bookId, callback) {
 }
 
 export function rejectSolicitation(bookId, callback) {
-    const db = getDatabase(app);
     const bookRef = ref(db, `livros_list/${bookId}`);
     update(bookRef, {
         user: '',
@@ -85,7 +82,6 @@ export function rejectSolicitation(bookId, callback) {
 }
 
 export function resetBookStatus(bookId, callback) {
-    const db = getDatabase(app);
     const bookRef = ref(db, `livros_list/${bookId}`);
     update(bookRef, {
         user: '',

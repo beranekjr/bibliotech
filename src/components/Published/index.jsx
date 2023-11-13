@@ -61,7 +61,7 @@ const Published = ({ ownerEmail, navigation }) => {
             );
           } else if (booksList.length > 0) {
             const filteredBooks = booksList.filter(book => book.owner === ownerEmail);
-          
+
             if (filteredBooks.length > 0) {
               return filteredBooks.map(book => (
                 <Post

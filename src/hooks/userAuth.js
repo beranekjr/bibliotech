@@ -2,7 +2,7 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    onAuthStateChanged
+    onAuthStateChanged,
 } from 'firebase/auth';
 import app from '../../firebase.config';
 import {
@@ -16,6 +16,11 @@ import {
     update,
     get
 } from 'firebase/database';
+import initializeAuth from '../database/auth';
+import initializeDatabase from '../database/database';
+
+const auth = initializeAuth(app);
+const db = initializeDatabase(app);
 
 /**
  * Create user in firebase database
@@ -24,8 +29,6 @@ import {
  * @param {function} callback function to be executed after create user is done
  */
 export function registerUser(email, password, callback) {
-    const auth = getAuth(app);
-
     createUserWithEmailAndPassword(auth, email, password)
         .then((response) => {
             const uid = response.user.uid;
@@ -33,8 +36,6 @@ export function registerUser(email, password, callback) {
                 id: uid,
                 email
             };
-
-            const db = getDatabase(app);
             const usersRef = ref(db, 'usuarios/' + uid);
 
             set(usersRef, data)
@@ -49,7 +50,6 @@ export function registerUser(email, password, callback) {
 }
 
 export const getUserByEmail = (email, callback) => {
-    const db = getDatabase(app);
 
     const usersRef = ref(db, 'usuarios');
     const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
@@ -64,8 +64,6 @@ export const getUserByEmail = (email, callback) => {
 }
 
 export const updateUserEmail = (userKey,  newEmail, callback) => {
-    const db = getDatabase(app);
-
     const usersRef = ref(db, 'usuarios/' + userKey);
     const updatedData = {
         email: newEmail,
@@ -87,11 +85,8 @@ export const updateUserEmail = (userKey,  newEmail, callback) => {
  * @param {string} callback function to be executed after create user is done
  */
 export function loginUser(email, password, callback) {
-    const auth = getAuth(app);
-
     signInWithEmailAndPassword(auth, email, password)
         .then(response => {
-            const db = getDatabase(app);
             const usersRef = ref(db, 'usuarios/' + response.user.uid);
 
             onValue(usersRef, callback);
@@ -105,11 +100,8 @@ export function loginUser(email, password, callback) {
  * @param {function} setLoading
  */
 export function onAuthChange(setUser, setLoading) {
-    const auth = getAuth(app);
-
     onAuthStateChanged(auth, user => {
         if (user) {
-            const db = getDatabase(app);
             const usersRef = ref(db, 'usuarios/' + user.uid);
 
             onValue(usersRef, (document) => {
@@ -123,7 +115,6 @@ export function onAuthChange(setUser, setLoading) {
 }
 
 export function logout() {
-    const auth = getAuth();
     auth.signOut().then(() => {
     // Sign-out successful.
     }).catch(err => {

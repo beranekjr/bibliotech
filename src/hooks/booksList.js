@@ -13,6 +13,9 @@ import {
 } from 'firebase/database';
 import app from '../../firebase.config';
 import { parseBooksList } from './helpers';
+import initializeDatabase from '../database/database';
+
+const db = initializeDatabase(app);
 
 /**
  * @param {string} uid
@@ -24,7 +27,6 @@ import { parseBooksList } from './helpers';
  * @param {function} callback
  */
 export function createBook(uid, localId, name, local, rentTime, description, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const newBooksRef = push(booksRef);
 
@@ -44,7 +46,6 @@ export function createBook(uid, localId, name, local, rentTime, description, cal
 }
 
 export function listBooks(startAt, callback) {
-    const db = getDatabase(app);
     const pageSize = 6;
     const booksRef = ref(db, 'livros_list');
 
@@ -70,7 +71,6 @@ export function listBooks(startAt, callback) {
 }
 
 export function getBooksByOwner(owner, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, 'livros_list');
     const booksQuery = query(booksRef, orderByChild('owner', equalTo(owner)));
 
@@ -83,7 +83,6 @@ export function getBooksByOwner(owner, callback) {
 }
 
 export function getBookByUid(uid, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, `livros_list`);
     let booksQuery = query(booksRef, orderByChild('uid'), equalTo(uid));
 
@@ -109,7 +108,6 @@ export function getBookByUid(uid, callback) {
 }
 
 export function removeBookByReferenceId(referenceId, callback) {
-    const db = getDatabase(app);
     const booksRef = ref(db, `livros_list/${referenceId}`);
 
     remove(booksRef)
