@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, ScrollView, Text, Alert } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
@@ -14,7 +14,7 @@ import { getBorrowedBooks, resetBookStatus } from '../../hooks/booksRent';
 const Borrowed = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
-
+    const [height, setHeight] = useState(250);
     const fetchBooks = () => {
         if (books.length === 0) {
             getBorrowedBooks(ownerEmail, (borrowedBooks) => setBooks(borrowedBooks));
@@ -48,7 +48,7 @@ const Borrowed = ({ ownerEmail, navigation }) => {
     }
 
     const renderItemCard = (booksList) => {
-        if (booksList === null) {
+        if (booksList.lenght === 0) {
             return (
               <>
                 <Loader />
@@ -59,12 +59,15 @@ const Borrowed = ({ ownerEmail, navigation }) => {
           
             if (filteredBooks.length > 0) {
               return filteredBooks.map(book => (
-                <Post
-                  key={book.id}
-                  navigation={navigation}
-                  book={book}
-                  userData={{ email: ownerEmail }}
-                />
+                <View>
+                  <Post
+                    key={book.id}
+                    navigation={navigation}
+                    book={book}
+                    userData={{ email: ownerEmail }}
+                  />
+                  <RentedCta bookReferenceId={book.referenceId} />
+                </View>
               ));
             } else {
               return <Text style={globalStyle.text}>Nenhum emprestado</Text>;
@@ -73,7 +76,10 @@ const Borrowed = ({ ownerEmail, navigation }) => {
             return <Text style={globalStyle.text}>Nenhum emprestado</Text>;
           }
     }
-
+    useEffect(() => {
+      const lenght = books.filter(book => book.owner === ownerEmail)
+      setHeight(250 * lenght.length);
+  }, [books]);
     return <View style={globalStyle.manageItemContainer}>
         <MyButton
             customStyle={globalStyle.collapsableCta}
@@ -83,7 +89,7 @@ const Borrowed = ({ ownerEmail, navigation }) => {
             collapsed={isCollapsed}
         />
         <Collapsible
-            style={globalStyle.collapsedContainer}
+            style={[globalStyle.collapsedContainer, {height: height} ]}
             collapsed={isCollapsed}
             onAnimationEnd={fetchBooks}
             >

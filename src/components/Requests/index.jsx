@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
@@ -14,7 +14,7 @@ import { getRentSolicitations, acceptSolicitation, rejectSolicitation} from '../
 const Requests = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
-
+    const [height, setHeight] = useState(250);
     const fetchBooks = () => {
         getRentSolicitations(ownerEmail, (booksPending) => {
             if (books.length === 0) {
@@ -68,7 +68,7 @@ const Requests = ({ ownerEmail, navigation }) => {
     }
 
     const renderItemCard = (booksList) => {
-        if (booksList === null) {
+        if (booksList.lenght === 0) {
             return (
               <>
                 <Loader />
@@ -79,12 +79,19 @@ const Requests = ({ ownerEmail, navigation }) => {
           
             if (filteredBooks.length > 0) {
               return filteredBooks.map(book => (
-                <Post
-                  key={book.id}
-                  navigation={navigation}
-                  book={book}
-                  userData={{ email: ownerEmail }}
-                />
+                <View>
+                    <Post
+                        key={book.id}
+                        navigation={navigation}
+                        book={book}
+                        userData={{ email: ownerEmail }}
+                        />
+                    <RequestsCtas
+                        key={book.uid}
+                        book={book}
+                        onPress={() => updateBookList(book.referenceId)}/>
+                </View>
+
               ));
             } else {
               return <Text style={globalStyle.text}>Nenhuma publicação</Text>;
@@ -93,7 +100,10 @@ const Requests = ({ ownerEmail, navigation }) => {
             return <Text style={globalStyle.text}>Nenhuma publicação</Text>;
           }
     }
-
+    useEffect(() => {
+        const lenght = books.filter(book => book.owner === ownerEmail)
+        setHeight(250 * lenght.length);
+    }, [books]);
     return <View style={globalStyle.manageItemContainer}>
         <MyButton
             customStyle={globalStyle.collapsableCta}
@@ -103,7 +113,7 @@ const Requests = ({ ownerEmail, navigation }) => {
             collapsed={isCollapsed}
         />
         <Collapsible
-            style={globalStyle.collapsedContainer}
+            style={[globalStyle.collapsedContainer, {height: height} ]}
             collapsed={isCollapsed}
             onAnimationEnd={fetchBooks}
             >

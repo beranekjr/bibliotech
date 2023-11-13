@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
@@ -13,7 +13,7 @@ import { getRentedBooksByOwner } from '../../hooks/booksRent';
 const Renting = ({ ownerEmail, navigation }) => {
     const [books, setBooks] = useState([]);
     const [isCollapsed, setCollapsed] = useState(true);
-
+    const [height, setHeight] = useState(250);
     const fetchBooks = () => {
         if (books.length === 0) {
             getRentedBooksByOwner(ownerEmail, (rentingBooks) => {
@@ -25,7 +25,7 @@ const Renting = ({ ownerEmail, navigation }) => {
     };
 
     const renderItemCard = (booksList) => {
-      if (booksList == {}) {
+      if (booksList == []) {
         return (
           <>
             <Loader />
@@ -50,7 +50,10 @@ const Renting = ({ ownerEmail, navigation }) => {
         return <Text style={globalStyle.text}>Nenhuma publicação</Text>;
       }
     }
-
+    useEffect(() => {
+      const lenght = books.filter(book => book.owner === ownerEmail)
+      setHeight(250 * lenght.length);
+  }, [books]);
     return <View style={globalStyle.manageItemContainer}>
         <MyButton
             customStyle={globalStyle.collapsableCta}
@@ -60,7 +63,7 @@ const Renting = ({ ownerEmail, navigation }) => {
             collapsed={isCollapsed}
         />
         <Collapsible
-            style={globalStyle.collapsedContainer}
+            style={[globalStyle.collapsedContainer, {height: height} ]}
             collapsed={isCollapsed}
             onAnimationEnd={fetchBooks}
             >

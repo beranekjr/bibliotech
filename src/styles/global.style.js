@@ -52,7 +52,6 @@ export default styles = StyleSheet.create({
         borderRadius: 15,
     },
     collapsedContainer: {
-        height: 400,
         padding: 8,
         paddingTop: 16,
         paddingBottom: 16,
