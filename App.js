@@ -55,6 +55,7 @@ export default function App() {
 
             { user ? (
                 <>
+                    <Stack.Screen name="Login" component={Login}  options={{ headerShown: false }} />
                     <Stack.Screen name="Feed" options={{...getNavbarTitle('Feed'), headerBackVisible: false}}>
                         {props => <Feed {...props} extraData={user} />}
                     </Stack.Screen>
@@ -66,6 +67,9 @@ export default function App() {
                     </Stack.Screen>
                     <Stack.Screen name="Profile" options={getNavbarTitle('Perfil')}>
                         {props => <Profile {...props} extraData={user} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="Register">
+                        {props => <Register {...props} extraData={user}  options={{ headerShown: false }} />}
                     </Stack.Screen>
                     <Stack.Screen name="Details">
                         {props => <Details {...props} extraData={user}  options={{ headerShown: false }} />}
