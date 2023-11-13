@@ -7,7 +7,6 @@ import NavBar from '../../components/NavBar';
 import Post from '../../components/Post';
 import MyInput from '../../components/MyInput';
 import { listBooks } from '../../hooks/booksList';
-import Loader from '../../components/Loader';
 
 const Feed = ({navigation, extraData}) => {
     const [search, setSearch] = useState('');
@@ -39,7 +38,7 @@ const Feed = ({navigation, extraData}) => {
 
     const handleSearch = (text) => {
         setSearch(text);
-    
+
         if (text === '') {
           setFilteredBooks([]);
           setSearchStarted(false);

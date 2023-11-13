@@ -90,12 +90,20 @@ export function getBookByUid(uid, callback) {
     get(booksQuery)
         .then(snapshot => {
             const booksArray = [];
+            booksArray.push(parseBooksList(snapshot.val(), null));
 
-            snapshot.forEach(childSnapshot => {
-                booksArray.push(parseBooksList(childSnapshot.val(), null));
+            if (booksArray.length > 0) {
+                callback({
+                    success: true,
+                    book: booksArray[0]
+                });
+                return;
+            }
+
+            callback({
+                success: true,
+                book: null
             });
-
-            callback(booksArray);
         })
         .catch(err => callback(err));
 }

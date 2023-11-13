@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Alert, StatusBar } from 'react-native';
+import React, { useState, useEffect, useCallback} from 'react';
+import { Text, View, Alert, StatusBar, ScrollView, RefreshControl } from 'react-native';
 
 import styles from './styles';
 import globalStyle from '../../styles/global.style';
@@ -13,7 +13,7 @@ import { getAllBookImages } from '../../hooks/images';
 import { rentBook } from '../../hooks/booksRent';
 
 const Details = ({ route, navigation }) => {
-
+    const [refreshing, setRefreshing] = useState(false);
     const [images, setImages] = useState([]);
     const { extraData } = route.params;
 
@@ -43,6 +43,7 @@ const Details = ({ route, navigation }) => {
             setStatus(true);
         }
     };
+
     const requestRent = (referenceId, email) => {
         rentBook(email, referenceId, (response) => {
             if (response.success) {
@@ -51,15 +52,26 @@ const Details = ({ route, navigation }) => {
                 Alert.alert('Alguma coisa deu errado, tente novamente mais tarde!');
             }
 
-            getBookByUid(book?.uid, (books) => {
-                if (Array.isArray(books) && books.length > 0) {
-                    setBook(books[0]);
+            getBookByUid(book?.uid, (result) => {
+                if (result.success) {
+                    setBook(result.book[0]);
                 }
             });
 
             getLabel(book.owner, book.pending, book.user);
         });
     }
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        getBookByUid(book?.uid, (result) => {
+            if (result.success) {
+                setBook(result.book[0]);
+            }
+
+            setRefreshing(false);
+        });
+    }, []);
 
     useEffect(() => {
         setBook(route.params.book);
@@ -78,34 +90,41 @@ const Details = ({ route, navigation }) => {
     return (
       <View style={globalStyle.body}>
         <StatusBar/>
-        <Slide items={images} config={ {width: 396, heigth: 396 } } />
-        <View style={globalStyle.container}>
-        {book ? (
-                <View key={book?.uid}>
-                    <View style={globalStyle.mb1}>
-                        <Text style={styles.name}>{book?.name}</Text>
-                        <Text style={styles.warn}>devolução em: {book?.rentTime} dias</Text>
-                    </View>
-                    <View style={globalStyle.mb1}>
-                    <Text style={styles.title}>Descrição:</Text>
-                        <Text style={styles.description}>{book?.description}</Text>
-                    </View>
-                    <View style={globalStyle.mb5}>
-                        <Text style={styles.title}>Informações do anunciante:</Text>
-                        <Text style={styles.description}>Local: {book?.local}</Text>
-                        <Text style={styles.description}>Contato: {showContact === true ? book?.owner : 'Disponível após usuario aceitar aluguel'}</Text>
-                    </View>
-                    <MyButton
-                        disabled={status}
-                        label={label}
-                        onPress={()=> requestRent(book?.referenceId, extraData.email)}
-                    />
-                </View>
-            ) : (
-                < Loader />
-            )
-        }
-        </View>
+        <ScrollView
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        >
+            <Slide items={images} config={ {width: 396, heigth: 396 } } />
+            <View
+                style={globalStyle.container}>
+                {book ? (
+                        <View key={book?.uid}>
+                            <View style={globalStyle.mb1}>
+                                <Text style={styles.name}>{book?.name}</Text>
+                                <Text style={styles.warn}>devolução em: {book?.rentTime} dias</Text>
+                            </View>
+                            <View style={globalStyle.mb1}>
+                            <Text style={styles.title}>Descrição:</Text>
+                                <Text style={styles.description}>{book?.description}</Text>
+                            </View>
+                            <View style={globalStyle.mb5}>
+                                <Text style={styles.title}>Informações do anunciante:</Text>
+                                <Text style={styles.description}>Local: {book?.local}</Text>
+                                <Text style={styles.description}>Contato: {showContact === true ? book?.owner : 'Disponível após usuario aceitar aluguel'}</Text>
+                            </View>
+                            <MyButton
+                                disabled={status}
+                                label={label}
+                                onPress={()=> requestRent(book?.referenceId, extraData.email)}
+                                />
+                        </View>
+                    ) : (
+                        < Loader />
+                        )
+                    }
+            </View>
+        </ScrollView>
         <NavBar navigation={navigation} />
     </View>
     );
